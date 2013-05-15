@@ -1,11 +1,54 @@
 Ext.define('WebCare.view.Viewport', {
   extend: 'Ext.container.Viewport',
-  layout: 'fit',
-
-  initComponent: function() {
-    this.items = {
-      html: 'It works!!'
-    };
+  layout: 'border',
+  requires: [
+    'WebCare.view.TipsDatePicker'
+  ],
+  initComponent: function () {
+    this.items = [
+      {
+        region: 'north',
+        xtype: 'container',
+        style: {backgroundImage: '-webkit-linear-gradient(top,#f3f6fc,#cbdaf0)'},
+        html: '<h1 style="padding-left: 10px">Banner</h1>',
+        height: 50,
+        layout: {
+          type: 'hbox',
+          align: 'middle'
+        }
+      },
+      {
+        region: 'west',
+        xtype: 'container',
+        layout: 'fit',
+        width: 250,
+        split: true,
+        splitterResize: false,
+        stateful: true,
+        stateId: 'mainnav.west',
+        weight: 10,
+        items: [
+          {
+            xtype:'container',
+            width: '250',
+            layout: {
+              type: 'vbox',
+//            pack: 'center',
+              align : 'stretch',
+              pack  : 'start'
+            },
+            items: [
+              {
+                xtype: 'tipsdatepicker',
+                handler: function(picker, date) {
+                  Ext.Msg.alert('System Info', 'Search for day: ' + date);
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
 //    this.items = {
 //      dockedItems: [{
 //        dock: 'top',

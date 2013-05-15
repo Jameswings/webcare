@@ -56,19 +56,9 @@ Ext.application({
   controllers: [],
   launch: function(){
     var loadingMask = Ext.get('loading-mask');
-    loadingMask.animate({
-      duration: 1000,
-      to: {
-        opacity: 0
-      }
-    });
+    loadingMask.fadeOut({duration: 1000});
 
     var loading = Ext.get('loading');
-    loading.animate({
-      duration: 1000,
-      to: {
-        opacity: 0
-      }
-    });
+    loading.fadeOut({duration: 1000 });
   }
 });

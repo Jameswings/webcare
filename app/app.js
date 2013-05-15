@@ -1,3 +1,12 @@
+var storeConstructor = Ext.data.Store.prototype.constructor;
+Ext.override('Ext.data.Store', {
+  careServerUrl: 'http://localhost:8080/care_server/jsonp/',
+  constructor: function(config){
+    console.log(config);
+    storeConstructor.call(this, [config]);
+  }
+});
+
 Ext.application({
   name: 'WebCare',
 
@@ -51,9 +60,9 @@ Ext.application({
 
   autoCreateViewport: true,
 
-  models: [],
-  stores: [],
-  controllers: [],
+  models: ['DateTips'],
+  stores: ['DateTips'],
+  controllers: ['Ecg'],
   launch: function(){
     var loadingMask = Ext.get('loading-mask');
     loadingMask.fadeOut({duration: 1000});

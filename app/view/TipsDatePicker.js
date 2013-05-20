@@ -1,6 +1,5 @@
 Ext.define('WebCare.view.TipsDatePicker', {
   extend: 'Ext.picker.Date',
-  width: 250,
   alias: 'widget.tipsdatepicker',
   fullUpdate: function(date){
     var me = this,

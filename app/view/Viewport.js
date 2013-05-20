@@ -2,7 +2,8 @@ Ext.define('WebCare.view.Viewport', {
   extend: 'Ext.container.Viewport',
   layout: 'border',
   requires: [
-    'WebCare.view.TipsDatePicker'
+    'WebCare.view.TipsDatePicker',
+    'WebCare.view.EcgList'
   ],
   initComponent: function () {
     this.items = [
@@ -30,7 +31,8 @@ Ext.define('WebCare.view.Viewport', {
         items: [
           {
             xtype:'container',
-            width: '250',
+            width: 250,
+            height: '',
             layout: {
               type: 'vbox',
 //            pack: 'center',
@@ -40,9 +42,16 @@ Ext.define('WebCare.view.Viewport', {
             items: [
               {
                 xtype: 'tipsdatepicker',
+                width: 250,
+                height: 200,
                 handler: function(picker, date) {
                   Ext.Msg.alert('System Info', 'Search for day: ' + date);
                 }
+              },
+              {
+                xtype: 'ecgList',
+                width: 250,
+                flex: 1
               }
             ]
           }

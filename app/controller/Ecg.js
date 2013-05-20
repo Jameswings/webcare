@@ -1,6 +1,6 @@
 Ext.define('WebCare.controller.Ecg', {
   extend: 'Ext.app.Controller',
-  stores: ['DateTips'],
+  stores: ['DateTips', 'EcgInfo'],
   refs: [
     {
       ref: 'tipsDatePicker',

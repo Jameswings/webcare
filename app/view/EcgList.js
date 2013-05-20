@@ -1,9 +1,10 @@
 Ext.define('WebCare.view.EcgList', {
   extend: 'Ext.grid.Panel',
+  alias: 'widget.ecgList',
   store: 'EcgInfo',
   title: 'Ecg List',
   columns: [
-    {header: "Name", flex: .6, dataIndex: 'customer_id'},
+    {header: "Name", flex: .6, dataIndex: 'customerId'},
     {header: "Date", flex: .4, dataIndex: 'date'}
   ],
   loadMask: true,
@@ -13,8 +14,22 @@ Ext.define('WebCare.view.EcgList', {
   },
   tbar: [
     {
-      text: 'New User',
-      handler: showContactForm
+      xtype: 'checkbox',
+      boxLabel: 'T',
+      listeners: {
+        change: function(cmp, newValue, oldValue){
+
+        }
+      }
+    },
+    {
+      xtype: 'checkbox',
+      boxLabel: 'Unread',
+      listeners: {
+        change: function(cmp, newValue, oldValue){
+
+        }
+      }
     },
     '->',
     {
@@ -29,8 +44,5 @@ Ext.define('WebCare.view.EcgList', {
       trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
       trigger2Cls: Ext.baseCSSPrefix + 'form-search-trigger'
     }
-  ],
-  initComponent: function(){
-
-  }
+  ]
 });

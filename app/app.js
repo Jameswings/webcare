@@ -60,9 +60,9 @@ Ext.application({
 
   autoCreateViewport: true,
 
-  models: ['DateTips'],
-  stores: ['DateTips'],
-  controllers: ['Ecg'],
+//  models: ['DateTips'],
+//  stores: ['DateTips'],
+  controllers: ['Ecg', 'Customer'],
   launch: function(){
     var loadingMask = Ext.get('loading-mask');
     loadingMask.fadeOut({duration: 1000});

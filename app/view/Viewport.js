@@ -3,7 +3,8 @@ Ext.define('WebCare.view.Viewport', {
   layout: 'border',
   requires: [
     'WebCare.view.TipsDatePicker',
-    'WebCare.view.EcgList'
+    'WebCare.view.EcgList',
+    'WebCare.view.CustomerList'
   ],
   initComponent: function () {
     this.items = [
@@ -26,7 +27,7 @@ Ext.define('WebCare.view.Viewport', {
         split: true,
         splitterResize: false,
         stateful: true,
-        stateId: 'mainnav.west',
+        stateId: 'mainnav.west10',
         weight: 10,
         items: [
           {
@@ -56,6 +57,14 @@ Ext.define('WebCare.view.Viewport', {
             ]
           }
         ]
+      },
+      {
+        region: 'west',
+        xtype: 'customerList',
+        width: 300,
+        stateful: true,
+        stateId: 'mainnav.west9',
+        weight: 9
       }
     ]
 //    this.items = {

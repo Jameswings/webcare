@@ -1,7 +1,7 @@
-Ext.define('WebCare.store.EcgInfo', {
+Ext.define('WebCare.store.CustomerInfo', {
   extend: 'WebCare.store.Base',
-  requires: ['WebCare.model.EcgInfo'],
-  model: 'WebCare.model.EcgInfo',
+  requires: ['WebCare.model.CustomerInfo'],
+  model: 'WebCare.model.CustomerInfo',
   proxy: {
     url: 'ecg!getEcgList',
     type: 'jsonp',

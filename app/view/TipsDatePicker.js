@@ -118,7 +118,7 @@ Ext.define('WebCare.view.TipsDatePicker', {
         me.rangeStart = Ext.Date.clone(current);
         first = false;
       }
-      textNodes[i].innerHTML = '<span style="vertical-align: top; width: 6px; font-size: 6pt; color: red;-webkit-text-size-adjust:none;" hiddenvalue="' + eDate.format(current, 'Y-m-d') + '"></span>' + html;
+      textNodes[i].innerHTML = '<div style="font-weight: bold; float: left; display: inline; text-align: left; vertical-align: text-top; padding:0 5px; width: 6px; font-size: 6pt; color: red;-webkit-text-size-adjust:none;" hiddenvalue="' + eDate.format(current, 'Y-m-d') + '"></div><div style="float: right">' + html + '</div>';
       setCellClass(cells[i], cls);
     }
     me.rangeEnd = Ext.Date.clone(current);
@@ -127,14 +127,20 @@ Ext.define('WebCare.view.TipsDatePicker', {
   },
   updateTipNumber: function(data){
     var me = this;
+    var padding = '0 5px';
     if (data){
       Ext.each(me.textNodes, function(node){
         var numberOfUnread = data[node.children[0].getAttribute('hiddenvalue')];
         if (numberOfUnread){
-          if (numberOfUnread > 10){
+          if (numberOfUnread == 10){
+            padding = '0 2px';
+          }
+          else if (numberOfUnread > 10){
+            padding = '0';
             numberOfUnread = '10+';
           }
           node.children[0].innerText = numberOfUnread;
+          node.children[0].style.padding = padding;
         }else{
           node.children[0].innerText = '';
         }

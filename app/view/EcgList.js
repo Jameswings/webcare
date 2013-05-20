@@ -12,6 +12,13 @@ Ext.define('WebCare.view.EcgList', {
   viewConfig: {
     stripeRows: true
   },
+  tools: [
+    {
+      type: 'plus',
+      tooltip: 'Monitor Users',
+      toolButton: 'addCustomer'
+    }
+  ],
   tbar: [
     {
       xtype: 'checkbox',
@@ -22,9 +29,10 @@ Ext.define('WebCare.view.EcgList', {
         }
       }
     },
+    '-',
     {
       xtype: 'checkbox',
-      boxLabel: 'Unread',
+      boxLabel: 'Un',
       listeners: {
         change: function(cmp, newValue, oldValue){
 

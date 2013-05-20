@@ -132,12 +132,35 @@
 <div id="code-load" style="display:none;">
   <script type="text/javascript">document.getElementById('loading-msg').innerHTML = 'Loading Core API...';</script>
   <script type="text/javascript" src="jslib/ext42/ext-all.js"></script>
-  <script type="text/javascript">document.getElementById('loading-msg').innerHTML = 'Loading Extentions...';</script>
-  <script type="text/javascript" src="jslib/ext_fixed.js"></script>
   <script type="text/javascript">document.getElementById('loading-msg').innerHTML = 'Loading UI Components...';</script>
   <script type="text/javascript">document.getElementById('loading-msg').innerHTML = 'Initializing...';</script>
 
   <script type="text/javascript" src="app/app.js"></script>
+  <script type="text/javascript">
+    Ext.onReady(function(){
+      var myStore2 = Ext.create('Ext.data.Store', {
+        fields: ['id', 'title'],
+        proxy: {
+          type: 'jsonp',
+          url : 'http://gdata.youtube.com/feeds/api/videos?q=surfing&v=2&alt=jsonc',
+          reader: {
+            type: 'json',
+            root: 'data.items'
+          }
+        },
+        listeners: {
+          load: function(store, records) {
+            Ext.each(records, function(rec) {
+              console.log(rec.get('title'));
+            });
+          }
+        },
+        autoLoad: true
+      });
+    });
+
+
+  </script>
 </div>
 
 

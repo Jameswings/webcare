@@ -17,15 +17,14 @@ Ext.define('WebCare.controller.Ecg', {
       scope: this
     });
   },
-  onDateTipsLoad: function(){
+  onDateTipsLoad: function(records){
     var me = this;
-    var datePicker = me.getTipsDatePicker(),
-        dateTipsStore = me.getDateTipsStore();
-    window.store = dateTipsStore;
-    console.log(dateTipsStore);
-    var data = Ext.Array.map(records, function(r){
-      return r.data;
-    });
-    datePicke.updateTipNumber(data);
+    var datePicker = me.getTipsDatePicker();
+
+    console.log(records);
+    var data = Ext.Array.toKeyValueMap(Ext.Array.map(records, function(r){
+       return r.data;
+    }), 'date', 'number');
+    datePicker.updateTipNumber(data);
   }
 });

@@ -1,66 +1,7 @@
 Ext.define('WebCare.view.TipsDatePicker', {
   extend: 'Ext.picker.Date',
-  requires: [
-    'Ext.XTemplate',
-    'Ext.button.Button',
-    'Ext.window.Window'
-  ],
   width: 250,
   alias: 'widget.tipsdatepicker',
-  renderTpl: [
-    '<div id="{id}-innerEl" role="grid">',
-    '<div role="presentation" class="{baseCls}-header">',
-    // the href attribute is required for the :hover selector to work in IE6/7/quirks
-    '<a id="{id}-prevEl" class="{baseCls}-prev {baseCls}-arrow" href="#" role="button" title="{prevText}" hidefocus="on" ></a>',
-    '<div class="{baseCls}-month" id="{id}-middleBtnEl">{%this.renderMonthBtn(values, out)%}</div>',
-    // the href attribute is required for the :hover selector to work in IE6/7/quirks
-    '<a id="{id}-nextEl" class="{baseCls}-next {baseCls}-arrow" href="#" role="button" title="{nextText}" hidefocus="on" ></a>',
-    '</div>',
-    '<table id="{id}-eventEl" class="{baseCls}-inner" cellspacing="0" role="presentation">',
-    '<thead role="presentation"><tr role="presentation">',
-    '<tpl for="dayNames">',
-    '<th role="columnheader" class="{parent.baseCls}-column-header" title="{.}" >',
-    '<div class="{parent.baseCls}-column-header-inner">{.:this.firstInitial}</div>',
-    '</th>',
-    '</tpl>',
-    '</tr></thead>',
-    '<tbody role="presentation"><tr role="presentation">',
-    '<tpl for="days">',
-    '{#:this.isEndOfWeek}',
-    '<td role="gridcell" id="{[Ext.id()]}">',
-    // the href attribute is required for the :hover selector to work in IE6/7/quirks
-    '<a role="presentation" hidefocus="on" class="{parent.baseCls}-date" href="#">/a>',
-    '</td>',
-    '</tpl>',
-    '</tr></tbody>',
-    '</table>',
-    '<tpl if="showToday">',
-    '<div id="{id}-footerEl" role="presentation" class="{baseCls}-footer">{%this.renderTodayBtn(values, out)%}</div>',
-    '</tpl>',
-    '</div>',
-    {
-      firstInitial: function(value) {
-        return Ext.picker.Date.prototype.getDayInitial(value);
-      },
-      isEndOfWeek: function(value) {
-        // convert from 1 based index to 0 based
-        // by decrementing value once.
-        value--;
-        var end = value % 7 === 0 && value !== 0;
-        return end ? '</tr><tr role="row">' : '';
-      },
-      renderTodayBtn: function(values, out) {
-        Ext.DomHelper.generateMarkup(values.$comp.todayBtn.getRenderTree(), out);
-      },
-      renderMonthBtn: function(values, out) {
-        Ext.DomHelper.generateMarkup(values.$comp.monthBtn.getRenderTree(), out);
-      }
-//      ,
-//      renderDatingBtn: function(values, out){
-//        Ext.DomHelper.generateMarkup(values.$comp.datingBtn.getRenderTree(), out);
-//      }
-    }
-  ],
   fullUpdate: function(date){
     var me = this,
       cells = me.cells.elements,
@@ -186,6 +127,22 @@ Ext.define('WebCare.view.TipsDatePicker', {
     me.monthBtn.setText(Ext.Date.format(date, me.monthYearFormat));
   },
   updateTipNumber: function(data){
+    var me = this;
+    if (data){
+      Ext.each(me.textNodes, function(node){
+        var numberOfUnread = data[node.children[0].getAttribute('hiddenvalue')];
+        if (numberOfUnread){
+          if (numberOfUnread > 10){
+            numberOfUnread = '10+';
+          }
+          node.children[0].innerText = numberOfUnread;
+        }else{
+          node.children[0].innerText = '';
+        }
+      });
+    }
+  },
+  setTipNumber: function(data){
     var me = this;
     if (data){
       Ext.each(me.textNodes, function(node){

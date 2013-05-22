@@ -1,0 +1,89 @@
+<html>
+<head>
+  <title>Web Care</title>
+  <link rel="stylesheet" type="text/css" href="jslib/ext42/resources/css/ext-all.css" />
+  <script type="text/javascript" src="jslib/ext42/ext-all.js"></script>
+</head>
+<body>
+  <script type="text/javascript">
+Ext.onReady(function(){
+  Ext.tip.QuickTipManager.init();
+  var bd = Ext.getBody();
+
+  /*
+   * ================  Simple form  =======================
+   */
+  var required = '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>';
+
+  var simple = Ext.widget({
+    xtype: 'form',
+    layout: 'form',
+    id: 'loginForm',
+    floating: true,
+    url: 'http://localhost:8080/care_server/jsonp/system!login',
+    frame: true,
+    title: 'Web Care - Doctor',
+    bodyPadding: '5 5 0',
+    width: 350,
+    tools: [
+      {
+        type: 'help',
+        handler: function(iconBtn){
+          Ext.Msg.alert('System', 'Please login with your <i><strong>Doctor</strong></i> account');
+        }
+      }
+    ],
+    fieldDefaults: {
+      msgTarget: 'under',
+      labelWidth: 75
+    },
+    defaultType: 'textfield',
+    items: [{
+      fieldLabel: 'User Name',
+      afterLabelTextTpl: required,
+      name: 'userName',
+      allowBlank: false,
+      tooltip: 'Enter your user name'
+    },{
+      fieldLabel: 'Password',
+      afterLabelTextTpl: required,
+      inputType: 'password',
+      name: 'password',
+      allowBlank: false,
+      tooltip: 'Enter your password'
+    },{
+      xtype: 'hidden',
+      name: 'type',
+      value: 1
+    }],
+    buttons: [{
+      text: 'Login',
+      handler: function() {
+        var formPanel = this.up('form');
+        if (formPanel.getForm().isValid()){
+          Ext.data.JsonP.request({
+            url: formPanel.url,
+            params: formPanel.getValues(),
+            success: function(reply){
+              location.href = 'main.html';
+            },
+            failure: function(reply){
+              Ext.Msg.alert(reply.msg);
+            }
+          });
+        }
+      }
+    },{
+      text: 'Reset',
+      handler: function() {
+        this.up('form').getForm().reset();
+      }
+    }]
+  });
+
+  simple.render(document.body);
+});
+
+  </script>
+</body>
+</html>

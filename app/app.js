@@ -1,6 +1,8 @@
+var careServerUrl = 'http://localhost:8080/care_server/';
+
 var storeConstructor = Ext.data.Store.prototype.constructor;
 Ext.override('Ext.data.Store', {
-  careServerUrl: 'http://localhost:8080/care_server/jsonp/',
+  careServerUrl: careServerUrl + 'jsonp/',
   constructor: function(config){
     console.log(config);
     storeConstructor.call(this, [config]);
@@ -9,7 +11,6 @@ Ext.override('Ext.data.Store', {
 
 Ext.application({
   name: 'WebCare',
-
   /***
    * response status codes.
    */
@@ -63,11 +64,34 @@ Ext.application({
 //  models: ['DateTips'],
 //  stores: ['DateTips'],
   controllers: ['Ecg', 'Customer'],
+  refs: [
+    {
+      ref: 'statusBar',
+      selector: '#systemStatusBar'
+    }
+  ],
   launch: function(){
+    var app = this;
     var loadingMask = Ext.get('loading-mask');
     loadingMask.fadeOut({duration: 1000});
 
     var loading = Ext.get('loading');
     loading.fadeOut({duration: 1000 });
+    var statusBar = app.getStatusBar();
+    Ext.data.JsonP.request({
+      url: careServerUrl + 'jsonp/system!ping',
+      success: function(){
+        statusBar.setStatus({
+          text: 'Ready',
+          iconCls: 'x-status-valid'
+        })
+      },
+      failure: function(){
+        statusBar.setStatus({
+          text: 'Can not connect to server',
+          iconCls: 'x-status-error'
+        })
+      }
+    });
   }
 });

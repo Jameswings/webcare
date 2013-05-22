@@ -149,14 +149,20 @@ Ext.define('WebCare.view.TipsDatePicker', {
   },
   setTipNumber: function(data){
     var me = this;
+    var padding = '0 5px';
     if (data){
       Ext.each(me.textNodes, function(node){
         var numberOfUnread = data[node.children[0].getAttribute('hiddenvalue')];
         if (numberOfUnread){
-          if (numberOfUnread > 10){
+          if (numberOfUnread == 10){
+            padding = '0 2px';
+          }
+          else if (numberOfUnread > 10){
+            padding = '0';
             numberOfUnread = '10+';
           }
           node.children[0].innerText = numberOfUnread;
+          node.children[0].style.padding = padding;
         }
       });
     }

@@ -4,7 +4,8 @@ Ext.define('WebCare.view.Viewport', {
   requires: [
     'WebCare.view.TipsDatePicker',
     'WebCare.view.EcgList',
-    'WebCare.view.CustomerList'
+    'WebCare.view.CustomerList',
+    'Ext.ux.statusbar.StatusBar'
   ],
   initComponent: function () {
     this.items = [
@@ -12,7 +13,7 @@ Ext.define('WebCare.view.Viewport', {
         region: 'north',
         xtype: 'container',
         style: {backgroundImage: '-webkit-linear-gradient(top,#f3f6fc,#cbdaf0)'},
-        html: '<h1 style="padding-left: 10px">Banner</h1>',
+        html: '<h1 style="padding-left: 10px; margin: 0"><img height="48" width="48" src="images/banner.jpg" />Web Care</h1>',
         height: 50,
         layout: {
           type: 'hbox',
@@ -65,6 +66,25 @@ Ext.define('WebCare.view.Viewport', {
         stateful: true,
         stateId: 'mainnav.west9',
         weight: 9
+      },
+      {
+        region: 'south',
+        xtype: 'container',
+        layout: 'fit',
+        weight: 20,
+        height: 28,
+        border: false,
+        items: {
+          id: 'systemStatusBar',
+          xtype: 'statusbar',
+          defaultText: 'Default status',
+//        statusAlign: 'right', // the magic config
+          text: 'Connecting to server...',
+          iconCls: 'x-status-busy',
+          items: [{
+            text: 'About us'
+          }]
+        }
       }
     ]
 //    this.items = {

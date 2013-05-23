@@ -76,6 +76,9 @@ Ext.onReady(function(){
             failure: function(reply){
               formPanel.setLoading(false);
               Ext.Msg.alert('System Info', reply.msg);
+            },
+            callback: function(){
+              console.log(arguments);
             }
           });
         }

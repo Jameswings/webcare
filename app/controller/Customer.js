@@ -3,12 +3,16 @@ Ext.define('WebCare.controller.Customer', {
   stores: ['CustomerInfo'],
   refs: [
     {
-      ref: 'tipsDatePicker',
-      selector: 'tipsdatepicker'
+      ref: 'customerList',
+      selector: 'customerList'
     }
   ],
   init: function(){
-
+      this.control({
+        'customerList': {
+          expand: this.onCustomerListShow
+        }
+      });
   },
   onLaunch: function() {
 //    var dateTipsStore = this.getDateTipsStore();
@@ -17,14 +21,10 @@ Ext.define('WebCare.controller.Customer', {
 //      scope: this
 //    });
   },
-  onDateTipsLoad: function(records){
-//    var me = this;
-//    var datePicker = me.getTipsDatePicker();
-//
-//    console.log(records);
-//    var data = Ext.Array.toKeyValueMap(Ext.Array.map(records, function(r){
-//      return r.data;
-//    }), 'date', 'number');
-//    datePicker.updateTipNumber(data);
+  onCustomerListShow: function(){
+    var me = this;
+    var customerList = me.getCustomerList();
+    customerList.store.load();
   }
+
 });

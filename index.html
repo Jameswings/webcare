@@ -61,14 +61,21 @@ Ext.onReady(function(){
       handler: function() {
         var formPanel = this.up('form');
         if (formPanel.getForm().isValid()){
+          formPanel.setLoading(true);
           Ext.data.JsonP.request({
             url: formPanel.url,
             params: formPanel.getValues(),
             success: function(reply){
-              location.href = 'main.html';
+              formPanel.setLoading(false);
+              if (reply.success){
+                location.href = 'main.html';
+              }else{
+                Ext.Msg.alert('System Info', reply.msg);
+              }
             },
             failure: function(reply){
-              Ext.Msg.alert(reply.msg);
+              formPanel.setLoading(false);
+              Ext.Msg.alert('System Info', reply.msg);
             }
           });
         }

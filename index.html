@@ -66,19 +66,24 @@ Ext.onReady(function(){
             url: formPanel.url,
             params: formPanel.getValues(),
             success: function(reply){
-              formPanel.setLoading(false);
               if (reply.success){
                 location.href = 'main.html';
               }else{
+                formPanel.setLoading(false);
                 Ext.Msg.alert('System Info', reply.msg);
               }
             },
             failure: function(reply){
               formPanel.setLoading(false);
+              if ("error" === reply){
+                Ext.Msg.alert('System Info', "Can not connect to server!");
+                return;
+              }
+
               Ext.Msg.alert('System Info', reply.msg);
             },
             callback: function(){
-              console.log(arguments);
+//              console.log(arguments);
             }
           });
         }

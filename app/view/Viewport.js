@@ -85,6 +85,31 @@ Ext.define('WebCare.view.Viewport', {
             text: 'About us'
           }]
         }
+      },{
+        region: 'center',
+        xtype: 'grid',
+        store: new Ext.data.Store({
+          fields: ['id', 'name'],
+          data: [{}, {}, {}]
+        }),
+        columns: [
+          {
+            text: 'ECG Main',
+            dataIndex: 'name',
+            width: 1280,
+            renderer: function(value, p, record, index){
+              var html = "";
+
+              if (index == 0){
+                html = '<canvas width="1280" height="250" id="ecgCanvas' + index + '" style="background-image: url(images/ecg_background.png); position: relative;"></canvas>';
+//                html = "<div style='height: 200; width: 100%'><h1 align='center'>Please Select ECG data</h1></div>";
+              }else{
+                html = "<div style='height: 200; width: 100%'><h1 align='center'>Click to add a ECG for comparison </h1></div>";
+              }
+              return html;
+            }
+          }
+        ]
       }
     ]
 //    this.items = {

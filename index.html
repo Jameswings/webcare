@@ -20,7 +20,7 @@ Ext.onReady(function(){
     layout: 'form',
     id: 'loginForm',
     floating: true,
-    url: 'http://localhost:8080/care_server/jsonp/system!login',
+    url: 'http://localhost/care_server/json/system!login',
     frame: true,
     title: 'Web Care - Doctor',
     bodyPadding: '5 5 0',
@@ -42,6 +42,7 @@ Ext.onReady(function(){
       fieldLabel: 'User Name',
       afterLabelTextTpl: required,
       name: 'userName',
+      value: 'doctor',
       allowBlank: false,
       tooltip: 'Enter your user name'
     },{
@@ -49,6 +50,7 @@ Ext.onReady(function(){
       afterLabelTextTpl: required,
       inputType: 'password',
       name: 'password',
+      value: '123456',
       allowBlank: false,
       tooltip: 'Enter your password'
     },{
@@ -62,10 +64,12 @@ Ext.onReady(function(){
         var formPanel = this.up('form');
         if (formPanel.getForm().isValid()){
           formPanel.setLoading(true);
-          Ext.data.JsonP.request({
+          Ext.Ajax.request({
             url: formPanel.url,
             params: formPanel.getValues(),
-            success: function(reply){
+            success: function(response){
+              var reply = Ext.decode(response.responseText);
+              console.log(reply);
               if (reply.success){
                 location.href = 'main.html';
               }else{

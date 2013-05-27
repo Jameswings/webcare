@@ -8,7 +8,11 @@ Ext.define('WebCare.controller.Ecg', {
     },
     {
       ref: 'customerListView',
-      selector: 'customerList'
+      selector: 'customerView'
+    },
+    {
+      ref: 'titleButton',
+      selector: 'ecgList tool[type=plus]'
     }
   ],
   init: function(){
@@ -42,8 +46,10 @@ Ext.define('WebCare.controller.Ecg', {
     var customerList = me.getCustomerListView();
     if (customerList.getCollapsed()){
       customerList.expand(false);
+      me.getTitleButton().setType('left');
     }else{
       customerList.collapse();
+      me.getTitleButton().setType('plus');
     }
   }
 });

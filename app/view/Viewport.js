@@ -4,7 +4,7 @@ Ext.define('WebCare.view.Viewport', {
   requires: [
     'WebCare.view.TipsDatePicker',
     'WebCare.view.EcgList',
-    'WebCare.view.CustomerList',
+    'WebCare.view.CustomerView',
     'Ext.ux.statusbar.StatusBar'
   ],
   initComponent: function () {
@@ -61,7 +61,7 @@ Ext.define('WebCare.view.Viewport', {
       },
       {
         region: 'west',
-        xtype: 'customerList',
+        xtype: 'customerView',
         width: 300,
         stateful: true,
         stateId: 'mainnav.west9',

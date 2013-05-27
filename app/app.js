@@ -1,10 +1,10 @@
-var careServerUrl = 'http://localhost:8080/care_server/';
+//var careServerUrl = 'http://localhost/care_server/';
+var careServerUrl = '/care_server/';
 
 var storeConstructor = Ext.data.Store.prototype.constructor;
 Ext.override('Ext.data.Store', {
-  careServerUrl: careServerUrl + 'jsonp/',
+  careServerUrl: careServerUrl + 'json/',
   constructor: function(config){
-    console.log(config);
     storeConstructor.call(this, [config]);
   }
 });
@@ -78,8 +78,8 @@ Ext.application({
     var loading = Ext.get('loading');
     loading.fadeOut({duration: 1000 });
     var statusBar = app.getStatusBar();
-    Ext.data.JsonP.request({
-      url: careServerUrl + 'jsonp/system!ping',
+    Ext.Ajax.request({
+      url: careServerUrl + 'json/system!ping',
       success: function(){
         statusBar.setStatus({
           text: 'Ready',

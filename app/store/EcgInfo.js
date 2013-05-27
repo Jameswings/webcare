@@ -4,7 +4,7 @@ Ext.define('WebCare.store.EcgInfo', {
   model: 'WebCare.model.EcgInfo',
   proxy: {
     url: 'ecg!getEcgList',
-    type: 'jsonp',
+    type: 'ajax',
     reader: {
       type: 'json',
       root: 'value'

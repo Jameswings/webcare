@@ -4,7 +4,7 @@ Ext.define('WebCare.store.DateTips', {
   model: 'WebCare.model.DateTips',
   proxy: {
     url: 'ecg!restoreEcgNumber',
-    type: 'jsonp',
+    type: 'ajax',
     reader: {
       type: 'json',
       root: 'value'

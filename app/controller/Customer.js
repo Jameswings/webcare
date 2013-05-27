@@ -3,14 +3,17 @@ Ext.define('WebCare.controller.Customer', {
   stores: ['CustomerInfo'],
   refs: [
     {
-      ref: 'customerList',
-      selector: 'customerList'
+      ref: 'customerView',
+      selector: 'customerView'
     }
   ],
   init: function(){
       this.control({
-        'customerList': {
-          expand: this.onCustomerListShow
+        'customerView': {
+          afterrender: this.onListShow
+        },
+        'customerView checkcolumn': {
+          checkchange: this.changeCustomerMonitored
         }
       });
   },
@@ -21,10 +24,40 @@ Ext.define('WebCare.controller.Customer', {
 //      scope: this
 //    });
   },
-  onCustomerListShow: function(){
+  onListShow: function(){
     var me = this;
-    var customerList = me.getCustomerList();
-    customerList.store.load();
-  }
+    var cv = me.getCustomerView();
+    cv.store.load();
+  },
+  changeCustomerMonitored: function(){
+    var me = this;
+    var store = me.getCustomerInfoStore();
+    var customerView = me.getCustomerView();
+    var updatedRecord = store.getUpdatedRecords();
+    if (updatedRecord.length > 0){
+      var datar = [];
+      Ext.each(updatedRecord, function(r, index){
+        datar[index] = r.data;
+      });
 
+      var params = {customerList: datar};
+
+      customerView.setLoading(true);
+      window.params = params;
+      console.log(params);
+
+      Ext.data.JsonP.request({
+        url: careServerUrl + 'jsonp/customer!saveCustomerMonitored?' + Ext.Object.toQueryString(params, true),
+        success: function(reply){
+          if (reply.success){
+            customerView.setLoading(false);
+            store.commitChanges();
+          }else{
+            customerView.setLoading(false);
+            Ext.Msg.alert('System Info', reply.msg);
+          }
+        }
+      });
+    }
+  }
 });

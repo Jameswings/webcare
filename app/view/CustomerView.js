@@ -1,19 +1,25 @@
-Ext.define('WebCare.view.CustomerList', {
+Ext.define('WebCare.view.CustomerView', {
   extend: 'Ext.grid.Panel',
-  alias: 'widget.customerList',
-  store: 'CustomerInfo',
+  alias: 'widget.customerView',
   title: 'Customer List',
   columns: [
     {header: "Name", flex: .6, dataIndex: 'nickName'},
-    {header: "Sex", flex: .4, dataIndex: 'sex'},
+    {header: "Sex", flex: .4, dataIndex: 'sexStr'},
     {header: "Age", flex: .4, dataIndex: 'age'},
-    {header: "Monitored", flex: .4, dataIndex: 'status'}
+    {
+      xtype: 'checkcolumn',
+      header: "Monitored",
+      flex: .4,
+      dataIndex: 'monitored'
+    }
   ],
-  loadMask: true,
-
+  store: 'CustomerInfo',
   viewConfig: {
     stripeRows: true
   },
+//  title: 'Customer List',
+  hideCollapseTool: true,
+  loadMask: true,
   tbar: [
     '->',
     {

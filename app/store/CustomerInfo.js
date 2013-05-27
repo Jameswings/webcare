@@ -3,8 +3,8 @@ Ext.define('WebCare.store.CustomerInfo', {
   requires: ['WebCare.model.CustomerInfo'],
   model: 'WebCare.model.CustomerInfo',
   proxy: {
-    url: 'customer!getCustomerList',
-    type: 'jsonp',
+    url: 'customer!getCustomerInfo',
+    type: 'ajax',
     reader: {
       type: 'json',
       root: 'value'

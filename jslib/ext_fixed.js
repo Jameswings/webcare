@@ -49,3 +49,35 @@ Ext.apply(Ext.Array, {
     return map;
   }
 });
+
+
+Ext.apply(Ext.Object, {
+  toStrutsParamString: function(obj, pref){
+    var pref = pref || '';
+    var strutsString = '';
+    if (typeof obj == 'object'){
+      if (obj.constructor == Array){
+        for (var i in obj){
+          if (typeof obj[i] == 'object'){
+            strutsString += this.toStrutsParamString(obj[i], pref + '[' + i + ']');
+          }else{
+            strutsString += '&' + pref + '[' + i + ']=' + obj[i];
+          }
+        }
+      }else if (obj.constructor == Object){
+        for (var key in obj){
+          if (!obj[key]){
+            strutsString += '&' + pref + '.' + key + '=';
+          }else if (typeof obj[key] == 'object'){
+            strutsString += this.toStrutsParamString(obj[key], pref + '.' + key);
+          }else{
+            strutsString += '&' + pref + '.' + key + '=' + obj[key];
+          }
+        }
+      }
+    }else{
+      strutsString = obj;
+    }
+    return strutsString.substring(1);
+  }
+});

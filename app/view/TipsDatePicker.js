@@ -118,7 +118,7 @@ Ext.define('WebCare.view.TipsDatePicker', {
         me.rangeStart = Ext.Date.clone(current);
         first = false;
       }
-      textNodes[i].innerHTML = '<div style="font-weight: bold; float: left; display: inline; text-align: left; vertical-align: text-top; padding:0 5px; width: 6px; font-size: 6pt; color: red;-webkit-text-size-adjust:none;" hiddenvalue="' + eDate.format(current, 'Y-m-d') + '"></div><div style="float: right">' + html + '</div>';
+      textNodes[i].innerHTML = '<div style="-webkit-text-size-adjust:none; font-weight: bold; float: left; display: inline; text-align: left; vertical-align: text-top; padding:0 5px; width: 6px; font-size: 6pt; color: red; -webkit-text-size-adjust:none;" hiddenvalue="' + eDate.format(current, 'Y-m-d') + '"></div><div style="float: right">' + html + '</div>';
       setCellClass(cells[i], cls);
     }
     me.rangeEnd = Ext.Date.clone(current);
@@ -139,8 +139,23 @@ Ext.define('WebCare.view.TipsDatePicker', {
             padding = '0';
             numberOfUnread = '10+';
           }
+
+          var updated = false;
+          if (node.children[0].innerText != numberOfUnread){
+            updated = true;
+          }
+
           node.children[0].innerText = numberOfUnread;
           node.children[0].style.padding = padding;
+
+          if (updated){
+            Ext.get(node.children[0]).highlight("0000ff", {
+              attr: "color", //can be any valid CSS property (attribute) that supports a color value
+              endColor: "ffffff",
+              easing: 'easeIn',
+              duration: 1000
+          });
+          }
         }else{
           node.children[0].innerText = '';
         }

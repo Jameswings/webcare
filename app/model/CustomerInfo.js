@@ -1,7 +1,7 @@
 Ext.define('WebCare.model.CustomerInfo', {
   extend: 'Ext.data.Model',
   fields: [
-    'id', 'name', 'iden', 'nickName', 'cellPhone', 'phone', 'sexStr', 'note',
+    'id', 'name', 'iden', 'nickName', 'cellPhone', 'phone', 'sexStr', 'note', 'docId',
     {name: 'type', type: 'int'},
     {name: 'sex', type: 'int'},
     {name: 'age', type: 'int'},

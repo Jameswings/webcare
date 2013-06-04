@@ -23,23 +23,25 @@ Ext.define('WebCare.controller.Ecg', {
      });
   },
   onLaunch: function() {
-    var dateTipsStore = this.getDateTipsStore();
+  },
+  onDateTipsLoad: function(){
+    var me = this,
+      datePicker = me.getTipsDatePicker(),
+      dateTipsStore = me.getDateTipsStore();
+
     dateTipsStore.load({
-      callback: this.onDateTipsLoad,
+      callback: function(records){
+        if (!records){
+          return;
+        }
+
+        var data = Ext.Array.toKeyValueMap(Ext.Array.map(records, function(r){
+          return r.data;
+        }), 'date', 'number');
+        datePicker.updateTipNumber(data);
+      },
       scope: this
     });
-  },
-  onDateTipsLoad: function(records){
-    if (!records){
-      return;
-    }
-    var me = this;
-    var datePicker = me.getTipsDatePicker();
-
-    var data = Ext.Array.toKeyValueMap(Ext.Array.map(records, function(r){
-       return r.data;
-    }), 'date', 'number');
-    datePicker.updateTipNumber(data);
   },
   toggleAddCustomerList: function(){
     var me = this;

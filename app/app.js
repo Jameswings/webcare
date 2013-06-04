@@ -32,7 +32,7 @@ Ext.application({
 
   constructor: function(config) {
 
-    this.initStateProvider();
+//    this.initStateProvider();
     Ext.apply(this, config);
     this.superclass.constructor.apply(this, arguments);
   },
@@ -93,5 +93,14 @@ Ext.application({
         })
       }
     });
+
+    app.refreshData();
+  },
+  refreshData: function(){
+    var me = this,
+      ecgController = me.getEcgController(),
+      customerController = me.getCustomerController();
+
+    ecgController.onDateTipsLoad();
   }
 });

@@ -4,6 +4,7 @@
 
   <link rel="stylesheet" type="text/css" href="jslib/ext42/resources/css/ext-all.css" />
   <link rel="stylesheet" type="text/css" href="jslib/ext42/src/ux/statusbar/css/statusbar.css" />
+  <link rel="stylesheet" type="text/css" href="css/webcare.css" />
 
   <style type="text/css">
 
@@ -146,26 +147,27 @@ function drawCanvas(id, data, offsetX, offsetY){
   var canvas = document.getElementById(id);
   var context = canvas.getContext('2d');
 
+  var width = canvas.width;
+  var height = canvas.height;
+  canvas.width = width;
+  canvas.height = height;
+
+  offsetY = Math.random() * 100;
+
+  context.font = 'italic 32pt Arial';
+  context.fillStyle = 'gray';
+  context.fillText('Demo ECG', 150, 200);
+
   context.lineWidth = 1;
   context.strokeStyle = 'blue';
 
   context.beginPath();
   var x = offsetX;
-  context.moveTo(x, y[0] + offsetY);
+  context.moveTo(x, y[0] - offsetY);
   for (var i = 1; i < y.length; i++){
     x = x + 1;
-    context.lineTo(x, y[i] + offsetY);
+    context.lineTo(x, y[i] - offsetY);
   }
-  // line 1
-
-  // quadratic curve
-//  context.quadraticCurveTo(230, 200, 250, 120);
-
-  // bezier curve
-//  context.bezierCurveTo(290, -40, 300, 200, 400, 150);
-
-  // line 2
-//  context.lineTo(500, 90);
 
   context.stroke();
 }

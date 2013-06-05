@@ -3,10 +3,58 @@ Ext.define('WebCare.view.EcgList', {
   alias: 'widget.ecgList',
   store: 'EcgInfo',
   title: 'Ecg List',
+  features: [{
+    ftype: 'grouping',
+    groupHeaderTpl: ['Name: {[values.children[0].get("cuName")]} ({children.length} Item{[values.children.length > 1 ? "s" : ""]}, {children:this.getUnread} unread)',
+      {
+        getUnread: function(records){
+          var unread = 0;
+
+          Ext.each(records, function(item){
+            if (item.get('read') === false){
+              unread++ ;
+            }
+          });
+
+          return unread;
+        }
+      }
+    ],
+    hideGroupedHeader: false,
+    enableGroupingMenu: false,
+    startCollapsed: true,
+    id: 'ecgGrouping'
+  }],
   columns: [
-    {header: "Name", flex: .6, dataIndex: 'customerId'},
-    {header: "Date", flex: .4, dataIndex: 'date'}
+    {header: "Name", dataIndex: 'cuName', hidden: true, hideable: false},
+    {header: "Type", flex: .3, dataIndex: '', groupable: false, hideable: false,
+      renderer: function(value){
+        return 'ECG';
+      }
+    },
+    {header: "Time", flex: .7, dataIndex: 'creationTime', groupable: false, hideable: false,
+      renderer: function(value){
+        return Ext.util.Format.date(value, 'm-d H:i:s');
+      }
+    }
   ],
+  viewConfig: {
+    //Return CSS class to apply to rows depending upon data values
+    getRowClass: function(record, index) {
+      var read = record.get('read');
+      return read ? 'read': 'unread';
+    }
+  },
+  initComponent: function(){
+//    this.columns = [
+//
+//    ];
+
+    this.callParent();
+
+    this.groupingFeature = this.view.getFeature('ecgGrouping');
+//    this.groupingFeature.enable();
+  },
   loadMask: true,
 
   viewConfig: {
@@ -22,22 +70,12 @@ Ext.define('WebCare.view.EcgList', {
   tbar: [
     {
       xtype: 'checkbox',
-      boxLabel: 'T',
-      listeners: {
-        change: function(cmp, newValue, oldValue){
-
-        }
-      }
+      boxLabel: 'T'
     },
     '-',
     {
       xtype: 'checkbox',
-      boxLabel: 'Un',
-      listeners: {
-        change: function(cmp, newValue, oldValue){
-
-        }
-      }
+      boxLabel: 'Un'
     },
     '->',
     {

@@ -1,10 +1,13 @@
 Ext.define('WebCare.model.EcgInfo', {
   extend: 'Ext.data.Model',
-  fields: ['id', 'doctorId', 'ecgId', 'customerId',
+  fields: ['id', 'doctorId', 'ecgId', 'customerId', 'cuName', 'cuNickname', 'cuSexStr', 'cuIden', 'cuCellPhone', 'cuPhone', 'annotation',
     {name: 'type', type: 'int'},
     {name: 'status', type: 'int'},
-    'annotation',
-    {name: 'creationTime', type: 'date'}
+    {name: 'cuSex', type: 'int'},
+    {name: 'cuAge', type: 'int'},
+    {name: 'creationTime', type: 'date'},
+    {name: 'cuCreationTime', type: 'date'},
+    {name: 'read', type: 'bool'}
   ],
   proxy: {
     url: 'json/empty.json',

@@ -1,6 +1,7 @@
 Ext.define('WebCare.controller.Ecg', {
   extend: 'Ext.app.Controller',
   stores: ['DateTips', 'EcgInfo'],
+  delayedTask: new Ext.util.DelayedTask(),
   refs: [
     {
       ref: 'tipsDatePicker',
@@ -13,21 +14,35 @@ Ext.define('WebCare.controller.Ecg', {
     {
       ref: 'titleButton',
       selector: 'ecgList tool[type=plus]'
+    },
+    {
+      ref: 'ecgList',
+      selector: 'ecgList'
     }
   ],
   init: function(){
-     this.control({
-       'box[toolButton=addCustomer]': {
-         click: this.toggleAddCustomerList
-       }
-     });
+    var me = this;
+    me.control({
+      'box[toolButton=addCustomer]': {
+        click: me.toggleAddCustomerList
+      },
+      'ecgList': {
+        itemclick: function(grid, record, item, index){
+          drawCanvas('ecgCanvas0', [], 0, 0);
+          if (record.get('read') == false){
+            me.delayedTask.delay(1000, me.readingNewEcg, me, [record]);
+          }
+        }
+      }
+    });
   },
   onLaunch: function() {
   },
   onDateTipsLoad: function(){
     var me = this,
       datePicker = me.getTipsDatePicker(),
-      dateTipsStore = me.getDateTipsStore();
+      dateTipsStore = me.getDateTipsStore(),
+      ecgStore = me.getEcgInfoStore();
 
     dateTipsStore.load({
       callback: function(records){
@@ -42,6 +57,8 @@ Ext.define('WebCare.controller.Ecg', {
       },
       scope: this
     });
+
+    ecgStore.load();
   },
   toggleAddCustomerList: function(){
     var me = this;
@@ -52,6 +69,16 @@ Ext.define('WebCare.controller.Ecg', {
     }else{
       customerList.collapse();
       me.getTitleButton().setType('plus');
+    }
+  },
+  readingNewEcg: function(record){
+    var me = this,
+      ecgList = me.getEcgList(),
+      selection = ecgList.getSelectionModel().getSelection();
+
+    if (selection.length > 0 && selection[0].get('id') == record.get('id')){
+      record.set('read', true);
+//      console.log('read!!');
     }
   }
 });

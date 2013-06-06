@@ -78,6 +78,19 @@ Ext.define('WebCare.controller.Ecg', {
 
     if (selection.length > 0 && selection[0].get('id') == record.get('id')){
       record.set('read', true);
+
+      var date = record.get('creationTime'),
+        dateTips = me.getDateTipsStore(),
+        datePicker = me.getTipsDatePicker(),
+        dtRecord = dateTips.findRecord('date', Ext.util.Format.date(date, 'Y-m-d'));
+
+      if (dtRecord){
+
+        dtRecord.set('number', dtRecord.get('number') - 1);
+        var data = {};
+        data[dtRecord.get('date')] = dtRecord.get('number');
+        datePicker.setTipNumber(data);
+      }
 //      console.log('read!!');
     }
   }

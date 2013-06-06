@@ -13,7 +13,7 @@ Ext.define('WebCare.view.Viewport', {
         region: 'north',
         xtype: 'container',
         style: {backgroundImage: '-webkit-linear-gradient(top,#f3f6fc,#cbdaf0)'},
-        html: '<h1 style="padding-left: 10px; margin: 0"><img height="48" width="48" src="images/banner.jpg" />Web Care</h1>',
+        html: '<h1 style="padding-left: 10px; margin: 0; float:left;"><img height="48" width="48" align="absmiddle" src="images/banner.jpg" /> Web Care </h1><div style="float: right; font-size: 12pt; padding-right: 10px; height: 48px; margin: 18px 0"/><a href="javascript:void(0)" onclick="Ext.Msg.alert(\'System\', \'Go to reporting\')">Reporting</a></div>',
         height: 50,
         layout: {
           type: 'hbox',

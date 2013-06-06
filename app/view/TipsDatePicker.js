@@ -118,7 +118,7 @@ Ext.define('WebCare.view.TipsDatePicker', {
         me.rangeStart = Ext.Date.clone(current);
         first = false;
       }
-      textNodes[i].innerHTML = '<div style="-webkit-text-size-adjust:none; font-weight: bold; float: left; display: inline; text-align: left; vertical-align: text-top; padding:0 5px; width: 6px; font-size: 6pt; color: red; -webkit-text-size-adjust:none;" hiddenvalue="' + eDate.format(current, 'Y-m-d') + '"></div><div style="float: right">' + html + '</div>';
+      textNodes[i].innerHTML = '<div style="-webkit-text-size-adjust:none; font-weight: bold; float: left; display: inline; text-align: left; vertical-align: text-top; padding:0 5px; width: 20px; font-size: 6pt; color: red; -webkit-text-size-adjust:none;" hiddenvalue="' + eDate.format(current, 'Y-m-d') + '"></div><div style="float: right">' + html + '</div>';
       setCellClass(cells[i], cls);
     }
     me.rangeEnd = Ext.Date.clone(current);
@@ -149,12 +149,12 @@ Ext.define('WebCare.view.TipsDatePicker', {
           node.children[0].style.padding = padding;
 
           if (updated){
-            Ext.get(node.children[0]).highlight("0000ff", {
-              attr: "color", //can be any valid CSS property (attribute) that supports a color value
+            Ext.get(node.children[0]).highlight("ff0000", {
+              attr: "backgroundColor", //can be any valid CSS property (attribute) that supports a color value
               endColor: "ffffff",
               easing: 'easeIn',
               duration: 1000
-          });
+            });
           }
         }else{
           node.children[0].innerText = '';
@@ -168,8 +168,11 @@ Ext.define('WebCare.view.TipsDatePicker', {
     if (data){
       Ext.each(me.textNodes, function(node){
         var numberOfUnread = data[node.children[0].getAttribute('hiddenvalue')];
-        if (numberOfUnread){
-          if (numberOfUnread == 10){
+        if (numberOfUnread != undefined){
+          if (numberOfUnread == 0) {
+            padding = '0 2px';
+            numberOfUnread = '';
+          }else if (numberOfUnread == 10){
             padding = '0 2px';
           }
           else if (numberOfUnread > 10){
@@ -178,6 +181,13 @@ Ext.define('WebCare.view.TipsDatePicker', {
           }
           node.children[0].innerText = numberOfUnread;
           node.children[0].style.padding = padding;
+
+          Ext.get(node.children[0]).highlight("ff0000", {
+            attr: "backgroundColor", //can be any valid CSS property (attribute) that supports a color value
+            endColor: "ffffff",
+            easing: 'easeIn',
+            duration: 1000
+          });
         }
       });
     }

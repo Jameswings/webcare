@@ -45,10 +45,7 @@ Ext.define('WebCare.view.Viewport', {
               {
                 xtype: 'tipsdatepicker',
                 width: 250,
-                height: 200,
-                handler: function(picker, date) {
-                  Ext.Msg.alert('System Info', 'Search for day: ' + date);
-                }
+                height: 200
               },
               {
                 xtype: 'ecgList',

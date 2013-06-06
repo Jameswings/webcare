@@ -20,8 +20,31 @@ Ext.define('WebCare.controller.Ecg', {
       selector: 'ecgList'
     }
   ],
+//  todayFilter: new Ext.util.Filter({
+//    disabled: true,
+//    filterFn: function(record){
+//      var date = record.get('creationTime');
+//      return date && Ext.util.Format.date(new Date()) == Ext.util.Format.date(date);
+//    }
+//  }),
+  unreadFilter: new Ext.util.Filter({
+    disabled: true,
+    filterFn: function(record){
+      return !record.get('read');
+    }
+  }),
+  searchFilter: new Ext.util.Filter({
+    q: '',
+    disabled: true,
+    filterFn: function(record){
+      var reg = new RegExp(Ext.String.escapeRegex(this.q), 'i');
+      return record.get('cuIden') == this.q || reg.test(record.get('cuName'));
+    }
+  }),
   init: function(){
-    var me = this;
+    var me = this,
+      ecgInfoStore = me.getEcgInfoStore();
+    ecgInfoStore.addFilter([me.unreadFilter, me.searchFilter]);
     me.control({
       'box[toolButton=addCustomer]': {
         click: me.toggleAddCustomerList
@@ -32,6 +55,30 @@ Ext.define('WebCare.controller.Ecg', {
           if (record.get('read') == false){
             me.delayedTask.delay(1000, me.readingNewEcg, me, [record]);
           }
+        },
+        searchTriggerClick: function(triggerIndex){
+          var ecgList = me.getEcgList();
+          if (triggerIndex == 0){
+            ecgList.clearSearchField();
+            me.searchFilter.disabled = true;
+            ecgInfoStore.filter();
+          }else{
+            var q = ecgList.getSearchFieldValue();
+            me.searchFilter.q = q;
+            me.searchFilter.disabled = false;
+            ecgInfoStore.filter();
+          }
+        }
+      },
+      'checkbox[annotation=unread]': {
+        change: function(checkbox, newValue, oldValue){
+          me.unreadFilter.disabled = !newValue;
+          ecgInfoStore.filter();
+        }
+      },
+      'tipsdatepicker': {
+        select: function(picker, date){
+
         }
       }
     });

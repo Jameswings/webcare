@@ -46,14 +46,16 @@ Ext.define('WebCare.view.EcgList', {
     }
   },
   initComponent: function(){
-//    this.columns = [
-//
-//    ];
-
     this.callParent();
 
-    this.groupingFeature = this.view.getFeature('ecgGrouping');
-//    this.groupingFeature.enable();
+    this.addEvents(
+      /**
+       * @event searchTriggerClick
+       * Fires when the search triggers are clicked
+       * @param {Number} index of trigger
+       */
+      'searchTriggerClick'
+    );
   },
   loadMask: true,
 
@@ -68,27 +70,36 @@ Ext.define('WebCare.view.EcgList', {
     }
   ],
   tbar: [
+//    {
+//      xtype: 'checkbox',
+//      annotation: 'today',
+//      boxLabel: 'T'
+//    },
+//    '-',
     {
       xtype: 'checkbox',
-      boxLabel: 'T'
-    },
-    '-',
-    {
-      xtype: 'checkbox',
-      boxLabel: 'Un'
+      annotation: 'unread',
+      boxLabel: 'Unread'
     },
     '->',
     {
-      xtype: 'triggerfield',
+      xtype: 'trigger',
+      annotation: 'q',
       emptyText : 'ID / Name',
       onTrigger1Click: function(eOpts){
-        this.reset();
+        this.up('ecgList').fireEvent('searchTriggerClick', [0]);
       },
       onTrigger2Click: function(eOpts){
-        Ext.Msg.alert('System Info', 'Search by: ' + this.getValue());
+        this.up('ecgList').fireEvent('searchTriggerClick', [1]);
       },
       trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
       trigger2Cls: Ext.baseCSSPrefix + 'form-search-trigger'
     }
-  ]
+  ],
+  clearSearchField: function(){
+    this.down('toolbar > trigger').reset();
+  },
+  getSearchFieldValue: function(){
+    return this.down('toolbar > trigger').getValue();
+  }
 });

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <title>User Maintenance</title>
+  <link rel="stylesheet" type="text/css" href="../jslib/ext42/resources/css/ext-all.css" />
+  <script type="text/javascript" src="../jslib/ext42/ext-all.js"></script>
+  <script type="text/javascript">
+Ext.onReady(function(){
+  Ext.QuickTips.init();
+  delete Ext.tip.Tip.prototype.minWidth;
+  var required = '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>';
+
+  var bd = Ext.getBody();
+
+  /*
+   * ================  Simple form  =======================
+   */
+  bd.createChild({tag: 'h2', html: 'User Maintenance'});
+
+  var form = Ext.widget({
+    xtype: 'form',
+    layout: 'form',
+    collapsible: true,
+    id: 'simpleForm',
+    url: 'save-form.php',
+    frame: true,
+//    floating: true,
+    title: 'User Form',
+    bodyPadding: '5 5 0',
+    width: 400,
+//    renderTo: 'userForm',
+    fieldDefaults: {
+      msgTarget: 'side',
+      labelWidth: 75
+    },
+    defaultType: 'textfield',
+    items: [{
+      fieldLabel: '类型',
+      afterLabelTextTpl: required,
+      xtype: 'combo',
+      store: new Ext.data.Store({
+        data: [{value: 1, desc: '医生'}, {value: 2, desc: '客户'}],
+        fields: [{name: 'value', type: 'int'}, 'desc']
+      }),
+      valueField: 'value',
+      displayField: 'desc',
+      name: 'userInfo.type',
+      allowBlank: false
+    },{
+      fieldLabel: '姓名',
+      afterLabelTextTpl: required,
+      name: 'userInfo.name',
+      allowBlank: false,
+      tooltip: '请输入名字'
+    },{
+      fieldLabel: '昵称',
+      name: 'userInfo.nickName',
+      allowBlank: true,
+      tooltip: '请输入昵称'
+    },{
+      fieldLabel: '身份证',
+      afterLabelTextTpl: required,
+      allowBlank: false,
+      name: 'userInfo.iden',
+      tooltip: "请输入身份证号码"
+    },  {
+      fieldLabel: '性别',
+      name: 'userInfo.sex',
+      allowBlank: false,
+      afterLabelTextTpl: required,
+      xtype: 'combo',
+      store: new Ext.data.Store({
+        data: [{value: 1, desc: '男'}, {value: 2, desc: '女'}],
+        fields: [{name: 'value', type: 'int'}, 'desc']
+      }),
+      valueField: 'value',
+      displayField: 'desc',
+      tooltip: '请选择性别'
+    }, {
+      fieldLabel: '年龄',
+      name: 'userInfo.age',
+      allowBlank: false,
+      afterLabelTextTpl: required,
+      xtype: 'numberfield',
+      minValue: 0,
+      maxValue: 150,
+      tooltip: '请输入年龄（0~150）'
+    }, {
+      fieldLabel: '联系电话',
+      name: 'userInfo.cellPhone',
+      allowBlank: false,
+      afterLabelTextTpl: required,
+      tooltip: '请输入联系电话'
+    }],
+
+    buttons: [{
+      text: '新增',
+      handler: function() {
+        this.up('form').getForm().isValid();
+      }
+    },{
+      text: '重置',
+      handler: function() {
+        this.up('form').getForm().reset();
+      }
+    }]
+  });
+
+  form.render(document.body);
+});
+  </script>
+</head>
+<body style="margin: 20px">
+  <!--<div id="userForm" style="width: 400px;"></div>-->
+</body>
+</html>

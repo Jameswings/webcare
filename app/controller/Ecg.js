@@ -104,7 +104,8 @@ Ext.define('WebCare.controller.Ecg', {
       },
       scope: this
     });
-
+  },
+  onEcgDataLoad: function(){
     ecgStore.load();
   },
   toggleAddCustomerList: function(){

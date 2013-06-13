@@ -4,7 +4,9 @@
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
   <title>User Maintenance</title>
   <link rel="stylesheet" type="text/css" href="../jslib/ext42/resources/css/ext-all.css" />
+  <link rel="stylesheet" type="text/css" href="../css/webcare.css" />
   <script type="text/javascript" src="../jslib/ext42/ext-all.js"></script>
+  <script type="text/javascript" src="../jslib/ext_widget.js"></script>
   <script type="text/javascript">
 Ext.onReady(function(){
   Ext.QuickTips.init();
@@ -21,9 +23,8 @@ Ext.onReady(function(){
   var form = Ext.widget({
     xtype: 'form',
     layout: 'form',
-    collapsible: true,
     id: 'simpleForm',
-    url: 'save-form.php',
+    url: '/care_server/json/user!addUser',
     frame: true,
 //    floating: true,
     title: 'User Form',
@@ -39,6 +40,7 @@ Ext.onReady(function(){
       fieldLabel: '类型',
       afterLabelTextTpl: required,
       xtype: 'combo',
+      editable: false,
       store: new Ext.data.Store({
         data: [{value: 1, desc: '医生'}, {value: 2, desc: '客户'}],
         fields: [{name: 'value', type: 'int'}, 'desc']
@@ -52,7 +54,7 @@ Ext.onReady(function(){
       afterLabelTextTpl: required,
       name: 'userInfo.username',
       allowBlank: false,
-      vtype: 'alphanumber',
+      vtype: 'alphanum',
       tooltip: '请输入用户名'
     },{
       fieldLabel: '姓名',
@@ -81,6 +83,7 @@ Ext.onReady(function(){
         data: [{value: 1, desc: '男'}, {value: 2, desc: '女'}],
         fields: [{name: 'value', type: 'int'}, 'desc']
       }),
+      editable: false,
       valueField: 'value',
       displayField: 'desc',
       tooltip: '请选择性别'
@@ -104,7 +107,25 @@ Ext.onReady(function(){
     buttons: [{
       text: '新增',
       handler: function() {
-        this.up('form').getForm().isValid();
+        var form = this.up('form').getForm();
+        if (form.isValid()) {
+          this.setDisabled(true);
+          form.submit({
+            success: function(form, action) {
+              if (action.result.success){
+                WebCare.Waterfall.msg('Success', action.result.msg);
+                form.reset();
+              }else{
+                WebCare.Waterfall.err('Failed', action.result.msg);
+              }
+              this.setDisabled(false);
+            },
+            failure: function(form, action) {
+              WebCare.Waterfall.err('System', action.result ? action.result.message : 'No response');
+              this.setDisabled(false);
+            }
+          });
+        }
       }
     },{
       text: '重置',
@@ -116,6 +137,7 @@ Ext.onReady(function(){
 
   form.render(document.body);
 });
+
   </script>
 </head>
 <body style="margin: 20px">

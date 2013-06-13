@@ -118,7 +118,7 @@ Ext.define('WebCare.view.TipsDatePicker', {
         me.rangeStart = Ext.Date.clone(current);
         first = false;
       }
-      textNodes[i].innerHTML = '<div style="-webkit-text-size-adjust:none; font-weight: bold; float: left; display: inline; text-align: left; vertical-align: text-top; padding:0 5px; width: 20px; font-size: 6pt; color: red; -webkit-text-size-adjust:none;" hiddenvalue="' + eDate.format(current, 'Y-m-d') + '"></div><div style="float: right">' + html + '</div>';
+      textNodes[i].innerHTML = '<div class="dateTipsNumber" style="float: left" hiddenvalue="' + eDate.format(current, 'Y-m-d') + '"></div><div style="float: right">' + html + '</div>';
       setCellClass(cells[i], cls);
     }
     me.rangeEnd = Ext.Date.clone(current);

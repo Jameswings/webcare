@@ -61,8 +61,6 @@ Ext.application({
 
   autoCreateViewport: true,
 
-//  models: ['DateTips'],
-//  stores: ['DateTips'],
   controllers: ['Ecg', 'Customer'],
   refs: [
     {
@@ -102,5 +100,6 @@ Ext.application({
       customerController = me.getCustomerController();
 
     ecgController.onDateTipsLoad();
+    ecgController.onEcgDataLoad();
   }
 });

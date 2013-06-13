@@ -48,6 +48,13 @@ Ext.onReady(function(){
       name: 'userInfo.type',
       allowBlank: false
     },{
+      fieldLabel: '用户名',
+      afterLabelTextTpl: required,
+      name: 'userInfo.username',
+      allowBlank: false,
+      vtype: 'alphanumber',
+      tooltip: '请输入用户名'
+    },{
       fieldLabel: '姓名',
       afterLabelTextTpl: required,
       name: 'userInfo.name',

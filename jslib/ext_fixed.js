@@ -1,3 +1,4 @@
+delete Ext.tip.Tip.prototype.minWidth;
 Ext.apply(Ext.Array, {
   toKeyValueMap: function(array, getKey, getValue, scope){
     var map = {},

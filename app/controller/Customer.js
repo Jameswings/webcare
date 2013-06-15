@@ -45,7 +45,7 @@ Ext.define('WebCare.controller.Customer', {
       });
       customerView.setLoading(true);
       Ext.Ajax.request({
-        url: careServerUrl + 'json/customer!saveCustomerMonitored',
+        url: careServerUrl + 'customer!saveCustomerMonitored',
         method: 'post',
         params: Ext.Object.toStrutsParamString(datar[0], 'customer'),
         success: function(response){

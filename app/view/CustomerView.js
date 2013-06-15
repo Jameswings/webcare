@@ -3,7 +3,7 @@ Ext.define('WebCare.view.CustomerView', {
   alias: 'widget.customerView',
   title: 'Customer List',
   columns: [
-    {header: "Name", flex: .6, dataIndex: 'nickName'},
+    {header: "Name", flex: .6, dataIndex: 'name'},
     {header: "Sex", flex: .4, dataIndex: 'sexStr'},
     {header: "Age", flex: .4, dataIndex: 'age'},
     {

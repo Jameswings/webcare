@@ -1,13 +1,11 @@
-//var careServerUrl = 'http://localhost/care_server/';
-var careServerUrl = '/care_server/';
+/**
+ * Applications configurations
+ */
+var careServerUrl = '/care_server/json/';
 
-var storeConstructor = Ext.data.Store.prototype.constructor;
-Ext.override('Ext.data.Store', {
-  careServerUrl: careServerUrl + 'json/',
-  constructor: function(config){
-    storeConstructor.call(this, [config]);
-  }
-});
+Ext.apply(Ext.Date, {
+  defaultFormat: 'Y-m-d'
+})
 
 Ext.application({
   name: 'WebCare',
@@ -69,6 +67,7 @@ Ext.application({
     }
   ],
   launch: function(){
+    window.app = this;
     var app = this;
     var loadingMask = Ext.get('loading-mask');
     loadingMask.fadeOut({duration: 1000});
@@ -77,7 +76,7 @@ Ext.application({
     loading.fadeOut({duration: 1000 });
     var statusBar = app.getStatusBar();
     Ext.Ajax.request({
-      url: careServerUrl + 'json/system!ping',
+      url: careServerUrl + 'system!ping',
       success: function(){
         statusBar.setStatus({
           text: 'Ready',

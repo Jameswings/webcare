@@ -1,0 +1,153 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <link href="http://cdn.sencha.com/ext/gpl/4.2.0/resources/css/ext-all.css" rel="stylesheet" />
+    <script src="http://cdn.sencha.com/ext/gpl/4.2.0/ext-all.js"></script>
+  <style>
+    body {
+      margin: 0px;
+      padding: 0px;
+    }
+  </style>
+</head>
+<body>
+<canvas id="myCanvas" width="3040" height="500"></canvas>
+<script type="text/Javascript" language="javascript">
+    Ext.onReady(function(){
+
+    });
+
+        Ext.Ajax.request({
+            url: '/care_server/json/ecg!getwsnlist', // 这里是你的服务器URL
+            params: { // 这里是发送到服务器的参数
+                id: 1
+            },
+            success: function(response){ // 这里是成功返回之后的调用
+                var reply = Ext.decode(response.responseText);
+
+
+
+                // process server response here
+
+                drawCanvas('myCanvas',10,20,3040,500,reply.value);
+            },
+            failure: function(response){ // 这里是失败返回之后的调用
+                Ext.Msg.alert('Title', 'Server error' + response.status);
+            }
+        });
+
+
+function drawCanvas(id, startX, startY, width, height,ecgdata){
+   
+	var canvas = document.getElementById(id);
+    var context = canvas.getContext('2d');
+
+    // context.lineWidth =1;
+    context.strokeStyle = '#000000';
+
+	var pxOf1cm = 20;
+    
+    var y = startY;
+
+	var ycount = parseInt(height / pxOf1cm);
+	var xcount = parseInt(width / pxOf1cm);
+	
+    //alert(pxOf1cm * xcount + startX);
+
+	//画X轴方向
+    for(var i = 0; i <= ycount; i++){
+	   context.beginPath();
+	   context.lineWidth = 0.5;
+	   context.moveTo(startX, y);
+	   context.lineTo(pxOf1cm * xcount + startX ,y);   
+	   context.stroke();
+	 
+	   var y1 = y + 4;
+	   for(var b = 0; b < 4 && (y + pxOf1cm) <= (startY + height) ; b++){
+	     context.lineWidth = 0.1;
+	     context.beginPath();
+	     context.moveTo(startX , y1);
+	     context.lineTo(pxOf1cm * xcount + startX ,y1);
+		 context.stroke();
+		 y1 = y + 4 + 4 * (b +1);
+	   }
+	   y = startY + pxOf1cm * ( i + 1);
+	}
+
+    //画Ｙ方向
+	var x = startX;
+    for(var i = 0; i <= xcount; i++){
+	   context.beginPath();
+	   context.lineWidth = 0.5;
+	   context.moveTo(x, startY);
+	   context.lineTo(x, pxOf1cm * ycount  + startY);   
+	   context.stroke();
+	 
+	   var x1 = x + 4;
+	   for(var b = 0; b < 4 && (x + pxOf1cm) <= (startX + width); b++){
+	     context.lineWidth = 0.1;
+	     context.beginPath();
+	     context.moveTo(x1, startY);
+	     context.lineTo(x1, pxOf1cm * ycount + startY);
+		 context.stroke();
+		 x1 = x + 4 + 4 * (b +1);
+	  }
+	  x = startX + pxOf1cm * ( i + 1);
+	}
+
+    //alert(ecgdata[0].length);
+    //alert(ecgdata[1].length);
+    //alert(ecgdata[2].length);
+    drawTime(context,startX, startY + height - 30);
+    drawEcg(context,startX, startY, ecgdata);
+   }
+
+    function drawEcg(context, startX,startY,ecgdata){
+        context.strokeStyle = '#0000db';
+        //画心电图
+        context.beginPath();
+        context.lineWidth = 1;
+        var x = startX;
+        context.moveTo(x, 180-ecgdata[0][0]);
+        for (var i = 1; i <ecgdata[0].length; i++){
+            x = x + 1;
+            context.lineTo(x, 180 - ecgdata[0][i]);
+        }
+        context.stroke();
+
+        context.strokeStyle = '#ff0000';
+        //画心电图
+        context.beginPath();
+        context.lineWidth = 1;
+        var x = startX;
+        context.moveTo(x, 360-ecgdata[1][0]);
+        for (var i = 1; i <ecgdata[1].length; i++){
+            x = x + 1;
+            context.lineTo(x, 360 - ecgdata[1][i]);
+        }
+        context.stroke();
+
+        context.strokeStyle = '#007900';
+        //画心电图
+        context.beginPath();
+        context.lineWidth = 1;
+        var x = startX;
+        context.moveTo(x, 540-ecgdata[2][0]);
+        for (var i = 1; i <ecgdata[2].length; i++){
+            x = x + 1;
+            context.lineTo(x, 540 - ecgdata[2][i]);
+        }
+        context.stroke();
+    }
+
+    function drawTime(context,startX,StartY){
+        context.strokeStyle = '#007900';
+        var drawX = startX;
+        for(var n = 0;n <= 30; n++){
+            context.fillText(n+'s', drawX, StartY);
+            drawX += 100;
+        }
+    }
+</script>
+</body>
+</html>

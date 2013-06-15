@@ -77,9 +77,7 @@ Ext.define('WebCare.controller.Ecg', {
         }
       },
       'tipsdatepicker': {
-        select: function(picker, date){
-
-        }
+        select: this.onEcgDataLoad
       }
     });
   },
@@ -88,8 +86,7 @@ Ext.define('WebCare.controller.Ecg', {
   onDateTipsLoad: function(){
     var me = this,
       datePicker = me.getTipsDatePicker(),
-      dateTipsStore = me.getDateTipsStore(),
-      ecgStore = me.getEcgInfoStore();
+      dateTipsStore = me.getDateTipsStore();
 
     dateTipsStore.load({
       callback: function(records){
@@ -106,7 +103,22 @@ Ext.define('WebCare.controller.Ecg', {
     });
   },
   onEcgDataLoad: function(){
-    ecgStore.load();
+    var me = this,
+      datePicker = me.getTipsDatePicker(),
+      date = datePicker.getValue(),
+      ecgList = me.getEcgList(),
+      ecgListCondition = ecgList.getTBarValues(),
+      ecgStore = me.getEcgInfoStore();
+
+    var params = Ext.Object.merge({
+      startDate: Ext.util.Format.date(date),
+      endDate: Ext.util.Format.date(date)
+    }, ecgListCondition);
+
+
+    ecgStore.load({
+      params: params
+    });
   },
   toggleAddCustomerList: function(){
     var me = this;

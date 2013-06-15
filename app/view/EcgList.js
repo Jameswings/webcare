@@ -22,7 +22,7 @@ Ext.define('WebCare.view.EcgList', {
     ],
     hideGroupedHeader: false,
     enableGroupingMenu: false,
-    startCollapsed: true,
+    startCollapsed: false,
     id: 'ecgGrouping'
   }],
   columns: [
@@ -101,5 +101,13 @@ Ext.define('WebCare.view.EcgList', {
   },
   getSearchFieldValue: function(){
     return this.down('toolbar > trigger').getValue();
+  },
+  getTBarValues: function(){
+    var me = this,
+      result = {};
+    result['unread'] = me.down('toolbar > checkbox[annotation=unread]').getValue();
+    result['q'] = me.down('toolbar > trigger[annotation=q]').getValue();
+
+    return result;
   }
 });

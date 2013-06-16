@@ -20,21 +20,6 @@ Ext.define('WebCare.view.CustomerView', {
 //  title: 'Customer List',
   hideCollapseTool: true,
   loadMask: true,
-  tbar: [
-    '->',
-    {
-      xtype: 'triggerfield',
-      emptyText : 'ID / Name',
-      onTrigger1Click: function(eOpts){
-        this.reset();
-      },
-      onTrigger2Click: function(eOpts){
-        Ext.Msg.alert('System Info', 'Search by: ' + this.getValue());
-      },
-      trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
-      trigger2Cls: Ext.baseCSSPrefix + 'form-search-trigger'
-    }
-  ],
   initComponent: function(){
     Ext.apply(this, {
       collapsed: true,
@@ -44,5 +29,42 @@ Ext.define('WebCare.view.CustomerView', {
       animCollapse: true
     });
     this.callParent();
+
+    this.addEvents(
+      /**
+       * @event searchTriggerClick
+       * Fires when the search triggers are clicked
+       * @param {Number} index of trigger
+       */
+      'searchTriggerClick'
+    );
+  },
+  tbar: [
+    {
+      xtype: 'checkbox',
+      annotation: 'monitored',
+      boxLabel: 'Monitored'
+    },
+    '->',
+    {
+      xtype: 'triggerfield',
+      emptyText : 'Name',
+      annotation: 'q',
+      emptyText : 'ID / Name',
+      onTrigger1Click: function(eOpts){
+        this.up('customerView').fireEvent('searchTriggerClick', [0]);
+      },
+      onTrigger2Click: function(eOpts){
+        this.up('customerView').fireEvent('searchTriggerClick', [1]);
+      },
+      trigger1Cls: Ext.baseCSSPrefix + 'form-clear-trigger',
+      trigger2Cls: Ext.baseCSSPrefix + 'form-search-trigger'
+    }
+  ],
+  clearSearchField: function(){
+    this.down('toolbar > trigger').reset();
+  },
+  getSearchFieldValue: function(){
+    return this.down('toolbar > trigger').getValue();
   }
 });

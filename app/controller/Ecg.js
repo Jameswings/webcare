@@ -18,6 +18,10 @@ Ext.define('WebCare.controller.Ecg', {
     {
       ref: 'ecgList',
       selector: 'ecgList'
+    },
+    {
+      ref: 'ecgDetail',
+      selector: 'ecgDetail'
     }
   ],
 //  todayFilter: new Ext.util.Filter({
@@ -44,7 +48,11 @@ Ext.define('WebCare.controller.Ecg', {
   init: function(){
     var me = this,
       ecgInfoStore = me.getEcgInfoStore();
+
+    me.app = me.getApplication();
     ecgInfoStore.addFilter([me.unreadFilter, me.searchFilter]);
+
+    // Ecg list controls
     me.control({
       'box[toolButton=addCustomer]': {
         click: me.toggleAddCustomerList
@@ -70,7 +78,20 @@ Ext.define('WebCare.controller.Ecg', {
           }
         }
       },
-      'checkbox[annotation=unread]': {
+      'ecgList trigger': {
+        specialkey: function(field, e){
+          // e.HOME, e.END, e.PAGE_UP, e.PAGE_DOWN,
+          // e.TAB, e.ESC, arrow keys: e.LEFT, e.RIGHT, e.UP, e.DOWN
+          if (e.getKey() == e.ENTER) {
+            var ecgList = me.getEcgList();
+            var q = ecgList.getSearchFieldValue();
+            me.searchFilter.q = q;
+            me.searchFilter.disabled = false;
+            ecgInfoStore.filter();
+          }
+        }
+      },
+      'ecgList checkbox[annotation=unread]': {
         change: function(checkbox, newValue, oldValue){
           me.unreadFilter.disabled = !newValue;
           ecgInfoStore.filter();
@@ -80,6 +101,16 @@ Ext.define('WebCare.controller.Ecg', {
         select: this.onEcgDataLoad
       }
     });
+
+
+    // Ecg detail controls
+//    me.control({
+//      'ecgDetail': {
+//        afterrender: this.drawEcgBg
+//      }
+//    });
+
+
   },
   onLaunch: function() {
   },
@@ -137,21 +168,45 @@ Ext.define('WebCare.controller.Ecg', {
       selection = ecgList.getSelectionModel().getSelection();
 
     if (selection.length > 0 && selection[0].get('id') == record.get('id')){
-      record.set('read', true);
+      Ext.Ajax.request({
+        url: careServerUrl + 'ecg!readEcg',
+        method: 'post',
+        params: {
+          ecgId: record.get('id')
+        },
+        success: function(response){
+          var reply = Ext.decode(response.responseText);
+          if (reply.success){
+            record.set('read', true);
 
-      var date = record.get('creationTime'),
-        dateTips = me.getDateTipsStore(),
-        datePicker = me.getTipsDatePicker(),
-        dtRecord = dateTips.findRecord('date', Ext.util.Format.date(date, 'Y-m-d'));
+            var date = record.get('creationTime'),
+              dateTips = me.getDateTipsStore(),
+              datePicker = me.getTipsDatePicker(),
+              dtRecord = dateTips.findRecord('date', Ext.util.Format.date(date, 'Y-m-d'));
 
-      if (dtRecord){
+            if (dtRecord){
 
-        dtRecord.set('number', dtRecord.get('number') - 1);
-        var data = {};
-        data[dtRecord.get('date')] = dtRecord.get('number');
-        datePicker.setTipNumber(data);
-      }
+              dtRecord.set('number', dtRecord.get('number') - 1);
+              var data = {};
+              data[dtRecord.get('date')] = dtRecord.get('number');
+              datePicker.setTipNumber(data);
+            }
+          }else{
+            me.app.statusErr('Unknown errors!')
+          }
+        },
+        failure: function(response){
+          me.app.statusErr('Unknown errors!')
+        }
+      });
 //      console.log('read!!');
     }
+  },
+  drawEcgBg: function(){
+    var me = this,
+      ecgDetailList = me.getEcgDetail(),
+      canvas = ecgDetailList.getEcgCanvas(0);
+
+    me.app.drawEcgBg(canvas.dom, 0, 0);
   }
 });

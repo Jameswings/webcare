@@ -5,6 +5,7 @@ Ext.define('WebCare.view.Viewport', {
     'WebCare.view.TipsDatePicker',
     'WebCare.view.EcgList',
     'WebCare.view.CustomerView',
+    'WebCare.view.EcgDetail',
     'Ext.ux.statusbar.StatusBar'
   ],
   initComponent: function () {
@@ -84,84 +85,9 @@ Ext.define('WebCare.view.Viewport', {
         }
       },{
         region: 'center',
-        xtype: 'grid',
-        store: new Ext.data.Store({
-          fields: ['id', 'name'],
-          data: [{}, {}, {}]
-        }),
-        columns: [
-          {
-            text: 'ECG Main',
-            dataIndex: 'name',
-            width: 1280,
-            renderer: function(value, p, record, index){
-              var html = "";
-
-              if (index == 0){
-                html = '<canvas width="1280" height="250" id="ecgCanvas' + index + '" style="background-image: url(images/ecg_background.png); position: relative;"></canvas>';
-//                html = "<div style='height: 200; width: 100%'><h1 align='center'>Please Select ECG data</h1></div>";
-              }else{
-                html = "<div style='height: 200; width: 100%'><h1 align='center'>Click to add a ECG for comparison </h1></div>";
-              }
-              return html;
-            }
-          }
-        ]
+        xtype: 'ecgDetail'
       }
     ]
-//    this.items = {
-//      dockedItems: [{
-//        dock: 'top',
-//        xtype: 'toolbar',
-//        height: 80,
-//        items: [{
-//          xtype: 'newstation',
-//          width: 150
-//        }, {
-//          xtype: 'songcontrols',
-//          flex: 1
-//        }, {
-//          xtype: 'component',
-//          html: 'Pandora<br>Internet Radio'
-//        }]
-//      }],
-//      layout: {
-//        type: 'hbox',
-//        align: 'stretch'
-//      },
-//      items: [{
-//        width: 250,
-//        xtype: 'panel',
-//        id: 'west-region',
-//        layout: {
-//          type: 'vbox',
-//          align: 'stretch'
-//        },
-//        items: [{
-//          xtype: 'stationslist',
-//          flex: 1
-//        }, {
-//          html: 'Ad',
-//          height: 250,
-//          xtype: 'panel'
-//        }]
-//      }, {
-//        xtype: 'container',
-//        flex: 1,
-//        layout: {
-//          type: 'vbox',
-//          align: 'stretch'
-//        },
-//        items: [{
-//          xtype: 'recentlyplayedscroller',
-//          height: 250
-//        }, {
-//          xtype: 'songinfo',
-//          flex: 1
-//        }]
-//      }]
-//    };
-
     this.callParent();
   }
 });

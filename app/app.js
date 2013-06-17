@@ -122,9 +122,10 @@ Ext.application({
       iconCls: 'x-status-valid'
     })
   },
-  drawEcgBg: function (canvas, startX,startY,ecgdata){
-//    var canvas = document.getElementById(id);
+  drawEcgBg: function (canvas){
+    var startX = 5, startY = 12;
     var context = canvas.getContext('2d');
+    context.clearRect(0, 0, canvas.width, canvas.height);
 
     // context.lineWidth =1;
     context.strokeStyle = '#000000';
@@ -181,5 +182,52 @@ Ext.application({
       }
       x = startX + pxOf1cm * ( i + 1);
     }
+
+    context.strokeStyle = '#007900';
+    var drawX = 0;
+    for(var n = 0;n <= 30; n++){
+      context.fillText(n+'s', drawX, 10);
+      drawX += pxOf1cm;
+    }
+  },
+  drawEcgLine: function(canvas, ecgData){
+    var startX = 5, startY = 12;
+    var context = canvas.getContext('2d');
+
+    context.strokeStyle = '#0000db';
+    //画心电图
+    context.beginPath();
+    context.lineWidth = 1;
+    var x = startX;
+    context.moveTo(x, 180-ecgData[0][0]);
+    for (var i = 1; i <ecgData[0].length; i++){
+      x = x + 1;
+      context.lineTo(x, 180 - ecgData[0][i]);
+    }
+    context.stroke();
+
+    context.strokeStyle = '#ff0000';
+    //画心电图
+    context.beginPath();
+    context.lineWidth = 1;
+    var x = startX;
+    context.moveTo(x, 250 - ecgData[1][0]);
+    for (var i = 1; i < ecgData[1].length; i++){
+      x = x + 1;
+      context.lineTo(x, 250 - ecgData[1][i]);
+    }
+    context.stroke();
+
+    context.strokeStyle = '#007900';
+    //画心电图
+    context.beginPath();
+    context.lineWidth = 1;
+    var x = startX;
+    context.moveTo(x, 320 - ecgData[2][0]);
+    for (var i = 1; i < ecgData[2].length; i++){
+      x = x + 1;
+      context.lineTo(x, 320 - ecgData[2][i]);
+    }
+    context.stroke();
   }
 });

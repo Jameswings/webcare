@@ -1,6 +1,7 @@
 Ext.define('WebCare.controller.Ecg', {
   extend: 'Ext.app.Controller',
   stores: ['DateTips', 'EcgInfo'],
+  delay: 2000, // for delay task
   delayedTask: new Ext.util.DelayedTask(),
   refs: [
     {
@@ -59,10 +60,25 @@ Ext.define('WebCare.controller.Ecg', {
       },
       'ecgList': {
         itemclick: function(grid, record, item, index){
-          drawCanvas('ecgCanvas0', [], 0, 0);
-          if (record.get('read') == false){
-            me.delayedTask.delay(1000, me.readingNewEcg, me, [record]);
-          }
+          Ext.Ajax.request({
+            url: careServerUrl + 'ecg!getEcgDataLine',
+            params: {
+              ecgId: record.get('id')
+            },
+            success: function(response){
+              var reply = Ext.decode(response.responseText);
+              var ecgDetailList = me.getEcgDetail();
+              var canvas = ecgDetailList.getEcgCanvas(0).dom;
+              me.app.drawEcgBg(canvas);
+              me.app.drawEcgLine(canvas, reply.value);
+              if (record.get('read') == false){
+                me.delayedTask.delay(me.delay, me.readingNewEcg, me, [record]);
+              }
+            },
+            failure: function(response){ // 这里是失败返回之后的调用
+              Ext.Msg.alert('Title', 'Server error' + response.status);
+            }
+          });
         },
         searchTriggerClick: function(triggerIndex){
           var ecgList = me.getEcgList();
@@ -101,16 +117,6 @@ Ext.define('WebCare.controller.Ecg', {
         select: this.onEcgDataLoad
       }
     });
-
-
-    // Ecg detail controls
-//    me.control({
-//      'ecgDetail': {
-//        afterrender: this.drawEcgBg
-//      }
-//    });
-
-
   },
   onLaunch: function() {
   },
@@ -207,6 +213,6 @@ Ext.define('WebCare.controller.Ecg', {
       ecgDetailList = me.getEcgDetail(),
       canvas = ecgDetailList.getEcgCanvas(0);
 
-    me.app.drawEcgBg(canvas.dom, 0, 0);
+    me.app.drawEcgBg(canvas.dom);
   }
 });

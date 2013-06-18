@@ -28,6 +28,8 @@ Ext.application({
     actions: {}
   },
 
+  requestCount: 0,
+
   constructor: function(config) {
 
 //    this.initStateProvider();
@@ -73,6 +75,27 @@ Ext.application({
     var loadingMask = Ext.get('loading-mask');
     loadingMask.fadeOut({duration: 1000});
 
+    Ext.Ajax.on('beforerequest', function( conn, options, eOpts ){
+      app.requestCount++;
+      app.statusBusy();
+    });
+
+    Ext.Ajax.on('requestcomplete', function(conn, response, options, eOpts){
+      app.requestCount--;
+      if (app.requestCount <= 0){
+        app.requestCount = 0; // reset to 0. compatible
+        app.statusMsg();
+      }
+    });
+
+    Ext.Ajax.on('requestexception', function(conn, response, options, eOpts){
+      app.requestCount--;
+      if (app.requestCount <= 0){
+        app.requestCount = 0; // reset to 0. compatible
+        app.statusErr(response.status + ':' + response.statusText);
+      }
+    });
+
     var loading = Ext.get('loading');
     loading.fadeOut({duration: 1000 });
     this.statusBar = app.getStatusBar();
@@ -104,22 +127,24 @@ Ext.application({
     ecgController.drawEcgBg();
   },
   statusErr: function(text){
+    text = text || 'Can not connect to server';
     this.statusBar.setStatus({
       text: text,
       iconCls: 'x-status-error'
     })
   },
   statusMsg: function(text){
+    text = text || 'Ready';
     this.statusBar.setStatus({
       text: text,
       iconCls: 'x-status-valid'
     })
   },
   statusBusy: function(text){
-    text = text || 'Loading,,,';
+    text = text || 'Loading...';
     this.statusBar.setStatus({
       text: text,
-      iconCls: 'x-status-valid'
+      iconCls: 'x-status-busy'
     })
   },
   drawEcgBg: function (canvas){

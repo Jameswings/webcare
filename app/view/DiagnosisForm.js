@@ -12,7 +12,7 @@ Ext.define('WebCare.view.DiagnosisForm',{
       xtype: 'textarea',
       name: 'name',
       value: '',
-      emptyText: 'No message leave here'
+      emptyText: 'No message left here'
     }
   ]
 });

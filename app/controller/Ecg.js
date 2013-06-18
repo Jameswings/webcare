@@ -126,6 +126,23 @@ Ext.define('WebCare.controller.Ecg', {
         select: this.onEcgDataLoad
       }
     });
+
+
+    // ECG detail controls
+    me.control({
+      'ecgDetail': {
+        itemdblclick: function(gridView, record, item, index){
+          if (index == 0){
+            return;
+          }
+//          record.set('drawBg', true);
+//          gridView.refreshNode(index);
+//          var canvas = me.getEcgDetail().getEcgCanvas(index).dom;
+//          me.app.drawEcgBg(canvas);
+          WebCare.Waterfall.msg('[In Development]', 'show history ECG');
+        }
+      }
+    });
   },
   onLaunch: function() {
   },

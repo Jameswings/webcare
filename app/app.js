@@ -130,36 +130,36 @@ Ext.application({
     // context.lineWidth =1;
     context.strokeStyle = '#000000';
 
-    var pxOf1cm = 40;
+    var pxOf5mm = 20;
 
     var height = 250;
-    var width = 75 * pxOf1cm;
+    var width = 150 * pxOf5mm;
 
     var y = startY;
 
-    var ycount = parseInt(height / pxOf1cm);
-    var xcount = parseInt(width / pxOf1cm);
+    var ycount = parseInt(height / pxOf5mm);
+    var xcount = parseInt(width / pxOf5mm);
 
-    //alert(pxOf1cm * xcount + startX);
+    //alert(pxOf5mm * xcount + startX);
 
     //画X轴方向
     for(var i = 0; i <= ycount; i++){
       context.beginPath();
       context.lineWidth = 0.5;
       context.moveTo(startX, y);
-      context.lineTo(pxOf1cm * xcount + startX ,y);
+      context.lineTo(pxOf5mm * xcount + startX ,y);
       context.stroke();
 
       var y1 = y + 4;
-      for(var b = 0; b < 4 && (y + pxOf1cm) <= (startY + height) ; b++){
+      for(var b = 0; b < 4 && (y + pxOf5mm) <= (startY + height) ; b++){
         context.lineWidth = 0.1;
         context.beginPath();
         context.moveTo(startX , y1);
-        context.lineTo(pxOf1cm * xcount + startX ,y1);
+        context.lineTo(pxOf5mm * xcount + startX ,y1);
         context.stroke();
         y1 = y + 4 + 4 * (b +1);
       }
-      y = startY + pxOf1cm * ( i + 1);
+      y = startY + pxOf5mm * ( i + 1);
     }
 
     //画Ｙ方向
@@ -168,26 +168,26 @@ Ext.application({
       context.beginPath();
       context.lineWidth = 0.5;
       context.moveTo(x, startY);
-      context.lineTo(x, pxOf1cm * ycount  + startY);
+      context.lineTo(x, pxOf5mm * ycount  + startY);
       context.stroke();
 
       var x1 = x + 4;
-      for(var b = 0; b < 4 && (x + pxOf1cm) <= (startX + width); b++){
+      for(var b = 0; b < 4 && (x + pxOf5mm) <= (startX + width); b++){
         context.lineWidth = 0.1;
         context.beginPath();
         context.moveTo(x1, startY);
-        context.lineTo(x1, pxOf1cm * ycount + startY);
+        context.lineTo(x1, pxOf5mm * ycount + startY);
         context.stroke();
         x1 = x + 4 + 4 * (b +1);
       }
-      x = startX + pxOf1cm * ( i + 1);
+      x = startX + pxOf5mm * ( i + 1);
     }
 
     context.strokeStyle = '#007900';
     var drawX = 0;
     for(var n = 0;n <= 30; n++){
       context.fillText(n+'s', drawX, 10);
-      drawX += pxOf1cm * 2.5;
+      drawX += pxOf5mm * 2.5 * 2;
     }
   },
   drawEcgLine: function(canvas, ecgData){

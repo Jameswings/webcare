@@ -92,7 +92,7 @@ Ext.application({
       app.requestCount--;
       if (app.requestCount <= 0){
         app.requestCount = 0; // reset to 0. compatible
-        app.statusErr(response.status + ':' + response.statusText);
+        app.statusErr(response.status + ': ' + response.statusText);
       }
     });
 

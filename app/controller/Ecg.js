@@ -87,7 +87,7 @@ Ext.define('WebCare.controller.Ecg', {
               }
             },
             failure: function(response){ // 这里是失败返回之后的调用
-              Ext.Msg.alert('Title', 'Server error' + response.status);
+//              Ext.Msg.alert('Title', 'Server error: ' + response.status);
             }
           });
         },

@@ -133,7 +133,7 @@ Ext.application({
     var pxOf1cm = 40;
 
     var height = 250;
-    var width = 30 * pxOf1cm;
+    var width = 75 * pxOf1cm;
 
     var y = startY;
 
@@ -187,7 +187,7 @@ Ext.application({
     var drawX = 0;
     for(var n = 0;n <= 30; n++){
       context.fillText(n+'s', drawX, 10);
-      drawX += pxOf1cm;
+      drawX += pxOf1cm * 2.5;
     }
   },
   drawEcgLine: function(canvas, ecgData){

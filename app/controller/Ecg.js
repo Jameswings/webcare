@@ -2,7 +2,9 @@ Ext.define('WebCare.controller.Ecg', {
   extend: 'Ext.app.Controller',
   stores: ['DateTips', 'EcgInfo'],
   delay: 2000, // for delay task
-  delayedTask: new Ext.util.DelayedTask(),
+  delayedTask: new Ext.util.DelayedTask(), // delay read ecg task
+  tipsDelay: 1000,
+  delayedTipsTask: new Ext.util.DelayedTask(),
   refs: [
     {
       ref: 'tipsDatePicker',
@@ -123,7 +125,8 @@ Ext.define('WebCare.controller.Ecg', {
         }
       },
       'tipsdatepicker': {
-        select: this.onEcgDataLoad
+        select: this.onEcgDataLoad,
+        displaychange: this.onDateTipsLoad
       }
     });
 
@@ -151,19 +154,22 @@ Ext.define('WebCare.controller.Ecg', {
       datePicker = me.getTipsDatePicker(),
       dateTipsStore = me.getDateTipsStore();
 
-    dateTipsStore.load({
-      callback: function(records){
-        if (!records){
-          return;
-        }
+    me.delayedTipsTask.delay(me.tipsDelay, function(){
+      dateTipsStore.load({
+        callback: function(records){
+          if (!records){
+            return;
+          }
 
-        var data = Ext.Array.toKeyValueMap(Ext.Array.map(records, function(r){
-          return r.data;
-        }), 'date', 'number');
-        datePicker.updateTipNumber(data);
-      },
-      scope: this
-    });
+          var data = Ext.Array.toKeyValueMap(Ext.Array.map(records, function(r){
+            return r.data;
+          }), 'date', 'number');
+          datePicker.updateTipNumber(data);
+        },
+        scope: me
+      });
+    })
+
   },
   onEcgDataLoad: function(){
     var me = this,

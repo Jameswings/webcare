@@ -1,6 +1,18 @@
 Ext.define('WebCare.view.TipsDatePicker', {
   extend: 'Ext.picker.Date',
   alias: 'widget.tipsdatepicker',
+  range: undefined,
+  initComponent: function(){
+    this.callParent();
+    this.addEvents(
+      /**
+       * @event displaychange
+       * Fires when the date item changes
+       * @param {WebCare.view.TipsDatePicker} scope
+       */
+      'displaychange'
+    );
+  },
   fullUpdate: function(date){
     var me = this,
       cells = me.cells.elements,
@@ -124,6 +136,11 @@ Ext.define('WebCare.view.TipsDatePicker', {
     me.rangeEnd = Ext.Date.clone(current);
 
     me.monthBtn.setText(Ext.Date.format(date, me.monthYearFormat));
+
+    if (me.range){
+      me.fireEvent('displaychange', me);
+    }
+    me.range = {start: me.rangeStart, end: me.rangeEnd};
   },
   updateTipNumber: function(data){
     var me = this;

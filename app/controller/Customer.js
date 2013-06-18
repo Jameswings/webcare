@@ -5,6 +5,10 @@ Ext.define('WebCare.controller.Customer', {
     {
       ref: 'customerView',
       selector: 'customerView'
+    },
+    {
+      ref: 'customerForm',
+      selector: 'customerForm'
     }
   ],
   customerMonitoredChange: false,
@@ -131,5 +135,10 @@ Ext.define('WebCare.controller.Customer', {
     }else{
       console.log('no change');
     }
+  },
+  setCustomerValue: function(data){
+    data = data || {};
+    var form = this.getCustomerForm();
+    form.getForm().setValues(data);
   }
 });

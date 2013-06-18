@@ -60,6 +60,18 @@ Ext.define('WebCare.controller.Ecg', {
       },
       'ecgList': {
         itemclick: function(grid, record, item, index){
+          var customerController = me.app.getCustomerController();
+          customerController.setCustomerValue({
+            name: record.get('cuName'),
+            nickname: record.get('cuNickname'),
+            sex: record.get('cuSexStr'),
+            iden: record.get('cuIden'),
+            age: record.get('cuAge'),
+            cellPhone: record.get('cuCellPhone')
+          });
+          var ecgDetailList = me.getEcgDetail();
+          var canvas = ecgDetailList.getEcgCanvas(0).dom;
+          me.app.drawEcgBg(canvas);
           Ext.Ajax.request({
             url: careServerUrl + 'ecg!getEcgDataLine',
             params: {
@@ -67,9 +79,6 @@ Ext.define('WebCare.controller.Ecg', {
             },
             success: function(response){
               var reply = Ext.decode(response.responseText);
-              var ecgDetailList = me.getEcgDetail();
-              var canvas = ecgDetailList.getEcgCanvas(0).dom;
-              me.app.drawEcgBg(canvas);
               me.app.drawEcgLine(canvas, reply.value);
               if (record.get('read') == false){
                 me.delayedTask.delay(me.delay, me.readingNewEcg, me, [record]);

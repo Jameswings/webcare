@@ -62,7 +62,7 @@ Ext.application({
   autoCreateViewport: true,
   statusBar: undefined,
 
-  controllers: ['Ecg', 'Customer'],
+  controllers: ['Ecg', 'Customer', 'Diagnosis'],
   refs: [
     {
       ref: 'statusBar',

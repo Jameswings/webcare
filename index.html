@@ -84,7 +84,7 @@ Ext.onReady(function(){
                 return;
               }
 
-              Ext.Msg.alert('System Info', reply.msg);
+              Ext.Msg.alert('System Info', reply.status + ': ' + reply.statusText);
             },
             callback: function(){
 //              console.log(arguments);

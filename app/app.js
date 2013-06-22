@@ -115,10 +115,12 @@ Ext.application({
   refreshData: function(){
     var me = this,
       ecgController = me.getEcgController(),
-      customerController = me.getCustomerController();
+      customerController = me.getCustomerController(),
+      diagnosisController = me.getDiagnosisController();
 
     ecgController.onDateTipsLoad();
     ecgController.onEcgDataLoad();
+    diagnosisController.refreshDiagnosis();
   },
   initEcg: function(){
     var me = this,
@@ -216,6 +218,11 @@ Ext.application({
     }
   },
   drawEcgLine: function(canvas, ecgData){
+
+    if (ecgData[0] == null){
+      return;
+    }
+
     var startX = 5, startY = 12;
     var context = canvas.getContext('2d');
 

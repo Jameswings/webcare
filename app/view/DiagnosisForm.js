@@ -10,7 +10,9 @@ Ext.define('WebCare.view.DiagnosisForm',{
       fieldLabel: ' ',
       labelSeparator: '',
       hideLabel: true,
+      allowBlank: false,
       xtype: 'textarea',
+      msgTarget: 'diagnosisErrDiv',
       name: 'message',
       value: '',
       emptyText: 'No message left here'

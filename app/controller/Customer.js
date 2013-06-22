@@ -29,6 +29,7 @@ Ext.define('WebCare.controller.Customer', {
   init: function(){
     var me = this,
       ciStore = me.getCustomerInfoStore();
+    me.app = me.getApplication();
 
     ciStore.addFilter([me.monitoredFilter, me.searchFilter]);
     me.control({
@@ -105,19 +106,17 @@ Ext.define('WebCare.controller.Customer', {
         success: function(response){
           var reply = Ext.decode(response.responseText);
           if (reply.success){
-            customerView.setLoading(false);
-            customerView.setLoading(false);
             me.setCustomerMonitoredChange(true);
             store.commitChanges();
           }else{
-            customerView.setLoading(false);
-            Ext.Msg.alert('System Info', reply.msg);
+            WebCare.Waterfall.err('System Info', reply.msg);
           }
+          customerView.setLoading(false);
         },
         failure: function(response){
           var reply = Ext.decode(response.responseText);
           customerView.setLoading(false);
-          Ext.Msg.alert('System Info', reply.msg);
+          WebCare.Waterfall.err('System Info', reply.msg);
         }
       });
     }
@@ -140,5 +139,8 @@ Ext.define('WebCare.controller.Customer', {
     data = data || {};
     var form = this.getCustomerForm();
     form.getForm().setValues(data);
+  },
+  currentCustomerValue: function(){
+    return this.getCustomerForm().getValues(false, false, false, true);
   }
 });

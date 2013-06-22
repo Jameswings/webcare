@@ -64,6 +64,7 @@ Ext.define('WebCare.controller.Ecg', {
         itemclick: function(grid, record, item, index){
           var customerController = me.app.getCustomerController();
           customerController.setCustomerValue({
+            id: record.get('customerId'),
             name: record.get('cuName'),
             nickname: record.get('cuNickname'),
             sex: record.get('cuSexStr'),
@@ -82,6 +83,7 @@ Ext.define('WebCare.controller.Ecg', {
             success: function(response){
               var reply = Ext.decode(response.responseText);
               me.app.drawEcgLine(canvas, reply.value);
+              me.app.getDiagnosisController().refreshDiagnosis(record.get('id'));
               if (record.get('read') == false){
                 me.delayedTask.delay(me.delay, me.readingNewEcg, me, [record]);
               }
@@ -246,5 +248,12 @@ Ext.define('WebCare.controller.Ecg', {
       canvas = ecgDetailList.getEcgCanvas(0);
 
     me.app.drawEcgBg(canvas.dom);
+  },
+  currentEcgValue: function(){
+    var selection = this.getEcgList().getSelectionModel().getSelection();
+    if (selection.length == 0){
+      return {};
+    }
+    return selection[0].data; // only show 1 origin ecg
   }
 });

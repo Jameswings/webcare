@@ -120,7 +120,17 @@ Ext.application({
 
     ecgController.onDateTipsLoad();
     ecgController.onEcgDataLoad();
+    customerController.setCustomerValue({
+      id: '-',
+      name: '-',
+      nickname: '-',
+      sex: '-',
+      iden: '-',
+      age: '-',
+      cellPhone: '-'
+    });
     diagnosisController.refreshDiagnosis();
+//    me.initEcg();
   },
   initEcg: function(){
     var me = this,

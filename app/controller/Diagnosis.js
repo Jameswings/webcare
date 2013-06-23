@@ -109,10 +109,11 @@ Ext.define('WebCare.controller.Diagnosis', {
         },
         failure: function(response){
           dForm.setLoading(false);
-          Ext.Msg.alert('System Info', response.status + ': ' + response.statusText);
+          WebCare.Waterfall.err('System Info', response.status + ': ' + response.statusText);
         }
       });
     }else{
+      dForm.getForm().setValues({ecgId: '', message: ''});
       dForm.setDisabled(true);
     }
   }
